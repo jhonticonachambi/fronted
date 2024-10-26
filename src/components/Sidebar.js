@@ -1,6 +1,6 @@
 // components/Sidebar.js
 import React, { useState } from 'react';
-import { FaHome, FaTasks, FaCog, FaBell, FaSignOutAlt, FaListAlt, FaChartBar } from 'react-icons/fa';
+import { FaHome, FaTasks, FaCog, FaBell, FaSignOutAlt, FaListAlt, FaChartBar,FaUser  } from 'react-icons/fa';
 
 const Sidebar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -49,7 +49,7 @@ const Sidebar = () => {
         {isDropdownOpen && (
           <ul className="absolute bottom-16 left-4 w-full bg-gray-700 text-white rounded-md shadow-lg z-10">
             <li className="flex items-center px-4 py-2 hover:bg-gray-600">
-              <FaBell className="h-5 w-5 mr-2" />
+              <FaUser className="h-5 w-5 mr-2" />
               <a href="/profile">Perfil</a>
             </li>
             <li className="flex items-center px-4 py-2 hover:bg-gray-600">

@@ -43,7 +43,7 @@ const Projects = () => {
             title={project.name}
             description={project.description}
             status="Activo"
-            imageSrc="https://via.placeholder.com/150"
+            imageSrc={project.bannerImage}
           />
         ))}
       </div>

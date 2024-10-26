@@ -16,7 +16,7 @@ const PostulationsTable = () => {
       }
 
       try {
-        const response = await axios.get(`http://localhost:5000/api/postulaciones/usuario/${userId}`); // Cambia aquí para incluir el userId en la URL
+        const response = await axios.get(`https://backend-rdf2.onrender.com/api/postulaciones/usuario/${userId}`); // Cambia aquí para incluir el userId en la URL
         setPostulations(response.data);
         setLoading(false);
       } catch (err) {

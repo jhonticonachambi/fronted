@@ -7,17 +7,16 @@ const Postulation = () => {
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [userId, setUserId] = useState(''); // Estado para almacenar el _id del usuario
-  const navigate = useNavigate(); // Para redirigir si es necesario
+  const [userId, setUserId] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token'); // Obtén el token de localStorage
-
+    const token = localStorage.getItem('token');
     if (!token) {
-      navigate('/login'); // Redirige al login si no hay token
+      navigate('/login');
     } else {
-      const storedUserId = localStorage.getItem('userId'); // Obtén el _id del usuario
-      setUserId(storedUserId); // Establece el _id del usuario en el estado
+      const storedUserId = localStorage.getItem('userId');
+      setUserId(storedUserId);
     }
   }, [navigate]);
 
@@ -36,7 +35,6 @@ const Postulation = () => {
     fetchProjectDetails();
   }, [projectId]);
 
-  // Función para manejar la postulación
   const handlePostulation = async () => {
     try {
       await axios.post('https://backend-rdf2.onrender.com/api/postulaciones', {
@@ -44,7 +42,6 @@ const Postulation = () => {
         userId: userId,
       });
       alert('Postulación realizada con éxito');
-      // Redirigir o realizar otra acción después de la postulación
     } catch (err) {
       console.error('Error al realizar la postulación', err);
       alert('Error al realizar la postulación');
@@ -52,31 +49,38 @@ const Postulation = () => {
   };
 
   if (loading) {
-    return <div>Cargando detalles del proyecto...</div>;
+    return <div className="text-center text-gray-700">Cargando detalles del proyecto...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="text-center text-red-600">{error}</div>;
   }
 
   return (
-    <div className="postulation-details-container">
-      <h1>Detalles del Proyecto</h1>
-      <h2>ID del Proyecto: {project._id}</h2>
-      <h3>Nombre: {project.name}</h3>
-      <p>Descripción: {project.description}</p>
-      <p>Requisitos: {project.requirements}</p>
-      <p>Tipo: {project.type}</p>
-      <p>Fecha de Inicio: {new Date(project.startDate).toLocaleDateString()}</p>
-      <p>Fecha de Fin: {new Date(project.endDate).toLocaleDateString()}</p>
-      <p>Voluntarios Requeridos: {project.volunteersRequired}</p>
-      <p>Tipo de Proyecto: {project.projectType}</p>
-      <h2>ID del Usuario Actual: {userId}</h2> {/* Muestra el _id del usuario */}
-
-      {/* Botón para realizar la postulación */}
-      <button onClick={handlePostulation} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
-        Postularse
-      </button>
+    <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+      {project.imageURL && (
+        <div className="w-full h-80 bg-gray-200">
+          <img src={project.imageURL} alt="Imagen del Proyecto" className="w-full h-full object-cover" />
+        </div>
+      )}
+      <div className="p-8">
+        <h2 className="text-3xl font-semibold text-gray-800">{project.name}</h2>
+        <p className="text-gray-600 mt-4 mb-6">{project.description}</p>
+        <div className="grid grid-cols-2 gap-4">
+          <p className="text-gray-700"><strong>Requisitos:</strong> {project.requirements}</p>
+          <p className="text-gray-700"><strong>Tipo:</strong> {project.type}</p>
+          <p className="text-gray-700"><strong>Fecha de Inicio:</strong> {new Date(project.startDate).toLocaleDateString()}</p>
+          <p className="text-gray-700"><strong>Fecha de Fin:</strong> {new Date(project.endDate).toLocaleDateString()}</p>
+          <p className="text-gray-700"><strong>Voluntarios Requeridos:</strong> {project.volunteersRequired}</p>
+          <p className="text-gray-700"><strong>Tipo de Proyecto:</strong> {project.projectType}</p>
+        </div>
+        <button
+          onClick={handlePostulation}
+          className="mt-8 w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg"
+        >
+          Postularse
+        </button>
+      </div>
     </div>
   );
 };

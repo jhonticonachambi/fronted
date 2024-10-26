@@ -125,7 +125,7 @@ const ProjectManagement = () => {
                     <td className="py-2 px-4">{project.description}</td>
                     <td className="py-2 px-4">{project.endDate}</td>
                     <td className="py-2 px-4">
-                      <Link to={`/project/${project._id}`} className="text-red-500">Ver Detalles</Link>
+                      <Link to={`/project/${project._id}`} className="text-blue-500">Ver Detalles</Link>
                     </td>
                   </tr>
                 ))}
