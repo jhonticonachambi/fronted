@@ -1,0 +1,183 @@
+/* Navbar */
+.navbar-home {
+  background-color: #001f3f;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand-home {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navbar-links-home {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.navbar-links-home li {
+  margin-left: 20px;
+}
+
+.navbar-links-home a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.active-home {
+  font-weight: bold;
+}
+
+.about-home{
+ padding: 50px;
+}
+
+/* Hero Section */
+.hero-home {
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.hero-home h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.hero-home p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  color: #f1f1f1;
+}
+
+.cta-button-home {
+  display: inline-block;
+  padding: 15px 30px;
+  background-color: white;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.cta-button-home:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+/* Beneficios */
+.benefits-home {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.benefits-home h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.benefits-grid-home {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.benefits-card-home {
+  background-color: white;
+  padding: 20px;
+  width: 30%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.benefits-card-home h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.benefits-card-home p {
+  color: #666;
+}
+
+/* Galería de Proyectos */
+.gallery-home {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.gallery-home h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.gallery-grid-home {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.gallery-item-home {
+  background-color: #ddd;
+  width: 350px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  color: #666;
+  border-radius: 10px;
+}
+
+/* Llamada a la acción final */
+.cta-footer-home {
+  background-color: #007bff;
+  color: white;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.cta-footer-home h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.cta-footer-home .cta-button-home {
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  background-color: white;
+  color: #007bff;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.cta-footer-home .cta-button-home:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+
+/* Footer sticky */
+.footer-home {
+  background-color: #1c1c1c;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer-home p {
+  margin: 0;
+  font-size: 0.9rem;
+}

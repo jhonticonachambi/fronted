@@ -1,0 +1,104 @@
+/* Estilos generales para el contenedor de la postulación */
+.postulation-container {
+  max-width: 100%;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+}
+
+/* Banner de la página */
+.banner {
+  background-color: #f0f0f0;
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  
+  margin-bottom: 40px;
+  border-radius: 8px;
+}
+
+.banner h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  color: #333;
+}
+
+.apply-button {
+  background-color: #28a745;
+  color: white;
+  padding: 15px 25px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.apply-button:hover {
+  background-color: #218838;
+}
+
+/* Estilos para el contenido del proyecto */
+.postulation-content {
+  margin-top: 20px;
+  padding: 10px 300px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.postulation-content section {
+  margin-bottom: 30px;
+}
+
+.postulation-content h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.postulation-content p, ul, ol {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+ol {
+  padding-left: 20px;
+  list-style-type: decimal;
+}
+
+ul li, ol li {
+  margin-bottom: 10px;
+}
+
+/* Estado del Proyecto */
+.project-status {
+  margin-top: 20px;
+}
+
+.project-status .badge {
+  background-color: #28a745;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+/* Ajustes de diseño responsivo */
+@media (max-width: 768px) {
+  .banner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .apply-button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 15px 0;
+  }
+}

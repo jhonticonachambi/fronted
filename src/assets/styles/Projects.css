@@ -1,0 +1,18 @@
+/* General page styles */
+.projects-container {
+    max-width: 100%;
+    margin: 0;
+    text-align: center;
+  }
+  
+  .projects-container h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 40px;
+  }
+  
+  .projects-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
