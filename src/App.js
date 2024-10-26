@@ -17,6 +17,8 @@ import Dashboard from './pages/admin/dashboard';
 import ProjectManagement from './pages/admin/ProjectManagement';
 import ProjectDetails from './pages/admin/ProjectDetails';
 import CreateProject from './pages/admin/CreateProject';
+import VolunteerRecommendations from './pages/admin/recommendations';
+import ReportGeneration from './pages/admin/reports';
 // Pagina de Layout
 import UserLayout from './layouts/UserLayout';
 import AdminLayout from './layouts/AdminLayout';
@@ -42,7 +44,8 @@ function App() {
         <Route path="/dashboard" element={<AdminLayout><Dashboard /></AdminLayout>} />
         <Route path="/project-management" element={<AdminLayout><ProjectManagement /></AdminLayout>} /> 
         <Route path="/admin/create-project" element={<AdminLayout><CreateProject /></AdminLayout>} /> {/* Ruta añadida para crear proyectos */}
-
+        <Route path="/recommendations" element={<AdminLayout><VolunteerRecommendations /></AdminLayout>} />
+        <Route path="/reports" element={<AdminLayout><ReportGeneration /></AdminLayout>} />
 
         
         <Route path="/project/:id" element={<AdminLayout><ProjectDetails /></AdminLayout>} /> 

@@ -24,7 +24,7 @@ const Postulation = () => {
   useEffect(() => {
     const fetchProjectDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/projects/${projectId}`);
+        const response = await axios.get(`https://backend-rdf2.onrender.com/api/projects/${projectId}`);
         setProject(response.data);
         setLoading(false);
       } catch (err) {
@@ -39,7 +39,7 @@ const Postulation = () => {
   // Función para manejar la postulación
   const handlePostulation = async () => {
     try {
-      await axios.post('http://localhost:5000/api/postulaciones', {
+      await axios.post('https://backend-rdf2.onrender.com/api/postulaciones', {
         projectId: project._id,
         userId: userId,
       });

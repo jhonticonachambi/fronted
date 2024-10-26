@@ -10,7 +10,7 @@ const Profile = () => {
     const fetchUserProfile = async () => {
       try {
         const token = localStorage.getItem('token'); // Obtener el token del localStorage
-        const response = await axios.get('http://localhost:5000/api/auth/profile', {
+        const response = await axios.get('https://backend-rdf2.onrender.com/api/auth/profile', {
           headers: {
             Authorization: `Bearer ${token}`, // Enviar el token en los headers
           },

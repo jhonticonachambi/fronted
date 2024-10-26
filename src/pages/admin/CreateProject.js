@@ -53,7 +53,7 @@ const CreateProject = () => {
     setSuccessMessage('');
 
     try {
-      const response = await axios.post('http://localhost:5000/api/projects', formData);
+      const response = await axios.post('https://backend-rdf2.onrender.com/api/projects', formData);
       console.log('Proyecto creado:', response.data);
       
       // Mostrar mensaje de éxito
