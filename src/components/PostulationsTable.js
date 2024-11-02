@@ -1,14 +1,18 @@
+// components/PostulationsTable.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Paper, Typography } from '@mui/material';
+import API_URL from '../config/apiConfig'; // Importar la URL de la API
 
-const PostulationsTable = () => {
+const PostulationsTable = ({ searchTerm }) => {
   const [postulations, setPostulations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchPostulations = async () => {
-      const userId = localStorage.getItem('userId'); // Asegúrate de almacenar el ID del usuario al iniciar sesión
+      const userId = localStorage.getItem('userId');
       if (!userId) {
         setError('ID de usuario no encontrado');
         setLoading(false);
@@ -16,7 +20,7 @@ const PostulationsTable = () => {
       }
 
       try {
-        const response = await axios.get(`https://backend-rdf2.onrender.com/api/postulaciones/usuario/${userId}`); // Cambia aquí para incluir el userId en la URL
+        const response = await axios.get(`${API_URL}/postulaciones/usuario/${userId}`); // Usar la URL de la API
         setPostulations(response.data);
         setLoading(false);
       } catch (err) {
@@ -36,26 +40,42 @@ const PostulationsTable = () => {
     return <div>{error}</div>;
   }
 
+  const filteredPostulations = postulations.filter(p => 
+    p.projectId.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div>
-      <h2>Tus Postulaciones Recientes</h2>
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead>
-          <tr>
-            <th className="px-4 py-2 text-left">Proyecto</th>
-            <th className="px-4 py-2 text-left">Estado</th>
-          </tr>
-        </thead>
-        <tbody>
-          {postulations.map((p, index) => (
-            <tr key={index} className="hover:bg-gray-100">
-              <td className="px-4 py-2">{p.projectId.name}</td> {/* Muestra el nombre del proyecto */}
-              <td className="px-4 py-2">{p.status}</td>
-            </tr>
+    <TableContainer component={Paper}>
+      <Typography variant="h6" component="div" sx={{ padding: 2, textAlign: 'center' }}>
+        Tus Postulaciones
+      </Typography>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell align="center"><strong>Proyecto</strong></TableCell>
+            <TableCell align="center"><strong>Estado</strong></TableCell>
+            <TableCell align="center"><strong>Acciones</strong></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {filteredPostulations.map((p) => (
+            <TableRow key={p._id} className="hover:bg-gray-100">
+              <TableCell align="center">{p.projectId.name}</TableCell>
+              <TableCell align="center">{p.status}</TableCell>
+              <TableCell align="center">
+                {p.status.toLowerCase() === 'aceptado' && (
+                  <Link to={`/proyectos/${p.projectId._id}`}>
+                    <Button variant="contained" color="primary">
+                      Ver Proyecto
+                    </Button>
+                  </Link>
+                )}
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
-    </div>
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 

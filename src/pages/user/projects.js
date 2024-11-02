@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import ProjectCard from '../../components/ProjectCard';
 import axios from 'axios';
+import API_URL from '../../config/apiConfig'; // Importar la URL de la API
 import '../../assets/styles/Projects.css';
 
 const Projects = () => {
@@ -12,7 +13,7 @@ const Projects = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get('https://backend-rdf2.onrender.com/api/projects');
+        const response = await axios.get(`${API_URL}/projects`); // Usar la URL de la API
         setProjects(response.data);
         setLoading(false);
       } catch (err) {

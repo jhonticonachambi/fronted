@@ -1,7 +1,6 @@
 // layouts/UserLayout.js
 import React from 'react';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
 import AppContent from '../components/AppContent';
 import '../assets/styles/Platform.css';
 import '../assets/styles/Header.css';

@@ -18,7 +18,11 @@ import ProjectManagement from './pages/admin/ProjectManagement';
 import ProjectDetails from './pages/admin/ProjectDetails';
 import CreateProject from './pages/admin/CreateProject';
 import VolunteerRecommendations from './pages/admin/recommendations';
-import ReportGeneration from './pages/admin/reports';
+
+import ReportManagement from './pages/admin/reportManagement';
+import ReportView from './pages/admin/reportView';
+import Task from './pages/admin/TaskManagement';
+
 // Pagina de Layout
 import UserLayout from './layouts/UserLayout';
 import AdminLayout from './layouts/AdminLayout';
@@ -45,7 +49,11 @@ function App() {
         <Route path="/project-management" element={<AdminLayout><ProjectManagement /></AdminLayout>} /> 
         <Route path="/admin/create-project" element={<AdminLayout><CreateProject /></AdminLayout>} /> {/* Ruta añadida para crear proyectos */}
         <Route path="/recommendations" element={<AdminLayout><VolunteerRecommendations /></AdminLayout>} />
-        <Route path="/reports" element={<AdminLayout><ReportGeneration /></AdminLayout>} />
+
+        <Route path="/report" element={<AdminLayout><ReportManagement /></AdminLayout>} />
+        <Route path="/report/:id" element={<AdminLayout><ReportView /></AdminLayout>} />
+
+        <Route path="/TaskManagement" element={<AdminLayout><Task /></AdminLayout>} />
 
         
         <Route path="/project/:id" element={<AdminLayout><ProjectDetails /></AdminLayout>} /> 

@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import '../../assets/styles/Register.css';
+import { TextField, Button, Box, Typography, FormControlLabel, Checkbox } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import API_URL from '../../config/apiConfig'; // Asegúrate de que la ruta sea correcta
 
+const skillsOptions = ['JavaScript', 'Python', 'Java', 'C++', 'React', 'Node.js']; // Opciones de habilidades
 
 const Register = () => {
-  const [form, setForm] = useState({
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
     name: '',
     dni: '',
     email: '',
@@ -11,214 +15,207 @@ const Register = () => {
     password: '',
     confirmPassword: '',
     skills: [],
-    phoneNumber: '',
+    phone: ''
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    if (type === 'checkbox') {
-      setForm((prevForm) => ({
-        ...prevForm,
-        skills: checked
-          ? [...prevForm.skills, value]
-          : prevForm.skills.filter((skill) => skill !== value),
-      }));
-    } else {
-      setForm({
-        ...form,
-        [name]: value,
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSkillChange = (skill) => {
+    setFormData(prevState => {
+      const skills = prevState.skills.includes(skill)
+        ? prevState.skills.filter(s => s !== skill)
+        : [...prevState.skills, skill];
+      return { ...prevState, skills };
+    });
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { password, confirmPassword } = formData;
+
+    // Validar contraseñas
+    if (password !== confirmPassword) {
+      setError('Las contraseñas no coinciden');
+      return;
+    }
+
+    setError('');
+    try {
+      const response = await fetch(`${API_URL}/auth/register`, { // Usando API_URL
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          ...formData, 
+          skills: formData.skills
+        }),
       });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log('Usuario registrado:', data);
+        navigate('/login');
+      } else {
+        console.error('Error en el registro:', data);
+        setError(data.message || 'Error en el registro');
+      }
+    } catch (error) {
+      console.error('Error en el servidor:', error);
+      setError('Error en el servidor');
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Lógica para manejar el registro (por ejemplo, envío de datos al backend)
-    console.log('Formulario enviado', form);
-  };
-
   return (
-    <div className="register-form-container">
-      <h2>Registrarse como Voluntario</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Nombre Completo</label>
-          <input
-            type="text"
-            name="name"
-            placeholder="Ingresa tu nombre completo"
-            value={form.name}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="form-group">
-          <label>DNI</label>
-          <input
-            type="text"
-            name="dni"
-            placeholder="Ingresa tu DNI"
-            value={form.dni}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Correo Electrónico</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="nombre@ejemplo.com"
-            value={form.email}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Dirección</label>
-          <input
-            type="text"
-            name="address"
-            placeholder="Ingresa tu dirección"
-            value={form.address}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Contraseña</label>
-          <input
-            type="password"
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="100vh"
+      bgcolor="#f5f5f5"
+    >
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          p: 4,
+          bgcolor: 'white',
+          borderRadius: 2,
+          boxShadow: 3,
+          width: '100%',
+          maxWidth: 500,
+        }}
+      >
+        <Typography variant="h5" component="h2" gutterBottom align="center">
+          Registro de Usuario
+        </Typography>
+        
+        {error && <Typography color="error" align="center">{error}</Typography>}
+        
+        <TextField
+          label="Nombre Completo"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          fullWidth
+          required
+          margin="normal"
+        />
+        
+        <TextField
+          label="DNI"
+          name="dni"
+          value={formData.dni}
+          onChange={handleChange}
+          fullWidth
+          required
+          margin="normal"
+        />
+        
+        <TextField
+          label="Correo Electrónico"
+          name="email"
+          type="email"
+          value={formData.email}
+          onChange={handleChange}
+          fullWidth
+          required
+          margin="normal"
+        />
+        
+        <TextField
+          label="Dirección"
+          name="address"
+          value={formData.address}
+          onChange={handleChange}
+          fullWidth
+          required
+          margin="normal"
+        />
+        
+        <Box display="flex" alignItems="center">
+          <TextField
+            label="Contraseña"
             name="password"
-            placeholder="Ingresa tu contraseña"
-            value={form.password}
+            type={showPassword ? 'text' : 'password'}
+            value={formData.password}
             onChange={handleChange}
+            fullWidth
+            required
+            margin="normal"
           />
-        </div>
-
-        <div className="form-group">
-          <label>Confirmar Contraseña</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirma tu contraseña"
-            value={form.confirmPassword}
-            onChange={handleChange}
+          <Button 
+            type="button" 
+            onClick={toggleShowPassword} 
+            variant="outlined" 
+            color="primary" 
+            sx={{ ml: 1 }}
+          >
+            {showPassword ? 'Ocultar' : 'Mostrar'}
+          </Button>
+        </Box>
+        
+        <TextField
+          label="Confirmar Contraseña"
+          name="confirmPassword"
+          type={showPassword ? 'text' : 'password'}
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          fullWidth
+          required
+          margin="normal"
+        />
+        
+        <Typography variant="h7" component="h7" gutterBottom>
+          Habilidades (selecciona varias):
+        </Typography>
+        {skillsOptions.map(skill => (
+          <FormControlLabel
+            key={skill}
+            control={
+              <Checkbox
+                checked={formData.skills.includes(skill)}
+                onChange={() => handleSkillChange(skill)}
+                name={skill}
+              />
+            }
+            label={skill}
           />
-        </div>
+        ))}
+        
+        <TextField
+          label="Teléfono"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
+          fullWidth
+          required
+          margin="normal"
+        />
 
-        <div className="form-group">
-          <label>Habilidades</label>
-          <div className="checkbox-group">
-            <label>
-              <input
-                type="checkbox"
-                name="skills"
-                value="Programación (Python, Java, etc.)"
-                onChange={handleChange}
-              />
-              Programación (Python, Java, etc.)
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="skills"
-                value="Soporte Técnico"
-                onChange={handleChange}
-              />
-              Soporte Técnico
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="skills"
-                value="Desarrollo Web"
-                onChange={handleChange}
-              />
-              Desarrollo Web
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="skills"
-                value="Diseño Gráfico"
-                onChange={handleChange}
-              />
-              Diseño Gráfico
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="skills"
-                value="Animador de Eventos"
-                onChange={handleChange}
-              />
-              Animador de Eventos
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="skills"
-                value="Fotografía"
-                onChange={handleChange}
-              />
-              Fotografía
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="skills"
-                value="Organización de Eventos"
-                onChange={handleChange}
-              />
-              Organización de Eventos
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="skills"
-                value="Cuidado de Niños"
-                onChange={handleChange}
-              />
-              Cuidado de Niños
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="skills"
-                value="Marketing Digital"
-                onChange={handleChange}
-              />
-              Marketing Digital
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="skills"
-                value="Logística"
-                onChange={handleChange}
-              />
-              Logística
-            </label>
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label>Número de Teléfono</label>
-          <input
-            type="text"
-            name="phoneNumber"
-            placeholder="Ingresa su número de teléfono"
-            value={form.phoneNumber}
-            onChange={handleChange}
-          />
-        </div>
-
-        <a href='/platform' type="submit" className="submit-button">
-          Registrar
-        </a>
-      </form>
-    </div>
+        <Button 
+          type="submit" 
+          variant="contained" 
+          color="primary" 
+          fullWidth
+          sx={{ mt: 2 }}
+        >
+          Registrarse
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

@@ -1,60 +1,110 @@
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
+import { Container, Typography, Card, CardContent, Grid } from '@mui/material';
+import BarChart from '../../components/BarChart';
+import axios from 'axios';
+import API_URL from '../../config/apiConfig'; // Importar API_URL
 
 const Dashboard = () => {
+  const [projects, setProjects] = useState([]);
+  const [usersCount, setUsersCount] = useState(0);
+  const [tasksCount, setTasksCount] = useState(0);
+  const [chartData, setChartData] = useState({ labels: [], values: [] });
+
+  const fetchDashboardData = async () => {
+    try {
+      const projectsResponse = await axios.get(`${API_URL}/projects`); // Usar API_URL
+      setProjects(projectsResponse.data);
+  
+      const volunteersResponse = await axios.get(`${API_URL}/auth/count/volunteers`); // Usar API_URL
+      setUsersCount(volunteersResponse.data.count);
+  
+      const tasksResponse = await axios.get(`${API_URL}/tasks/count`); // Usar API_URL
+      setTasksCount(tasksResponse.data.count);
+  
+      setChartData({
+        labels: projectsResponse.data.map(project => project.name),
+        values: projectsResponse.data.map(project => project.value || 0)
+      });
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+    }
+  };
+  
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
   return (
-    <div >
-      
-      {/* Contenido principal */}
-      <div className="flex-1 p-6 bg-gray-100">
-        <h1 className="text-3xl font-bold mb-6">Plataforma de Voluntarios</h1>
+    <Container>
+      <Typography variant="h4" className="mb-4">Dashboard</Typography>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={6} md={4}>
+          <Card>
+            <CardContent>
+              <Typography variant="h5">Usuarios Voluntarios</Typography>
+              <Typography variant="h2">{usersCount}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <Card>
+            <CardContent>
+              <Typography variant="h5">Proyectos</Typography>
+              <Typography variant="h2">{projects.length}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <Card>
+            <CardContent>
+              <Typography variant="h5">Tareas</Typography>
+              <Typography variant="h2">{tasksCount}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
 
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold mb-4">Proyectos Disponibles</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Cards de Proyectos */}
-            <div className="bg-white shadow-md rounded p-6">
-              <h3 className="text-xl font-bold mb-2">Reforestación en Amazonas</h3>
-              <p>Reforestación de áreas afectadas por la deforestación en la región de Amazonas.</p>
-              <p className="mt-2 text-gray-600">Fecha Límite: 31/12/2024</p>
-              <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">Ver Detalles</button>
-            </div>
+        <Grid item xs={12}>
+          <Card>
+            <CardContent>
+              <Typography variant="h5">Lista de Proyectos</Typography>
+              {projects.length > 0 ? (
+                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ border: '1px solid #ccc', padding: '8px' }}>Nombre</th>
+                      <th style={{ border: '1px solid #ccc', padding: '8px' }}>Descripción</th>
+                      <th style={{ border: '1px solid #ccc', padding: '8px' }}>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {projects.map((project) => (
+                      <tr key={project._id}>
+                        <td style={{ border: '1px solid #ccc', padding: '8px' }}>{project.name}</td>
+                        <td style={{ border: '1px solid #ccc', padding: '8px' }}>{project.description}</td>
+                        <td style={{ border: '1px solid #ccc', padding: '8px' }}>
+                          <button onClick={() => console.log(`Ver detalles de ${project.name}`)}>Ver</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <Typography>No hay proyectos disponibles</Typography>
+              )}
+            </CardContent>
+          </Card>
+        </Grid>
 
-            <div className="bg-white shadow-md rounded p-6">
-              <h3 className="text-xl font-bold mb-2">Ayuda Comunitaria</h3>
-              <p>Clasificación y distribución de alimentos en comunidades vulnerables.</p>
-              <p className="mt-2 text-gray-600">Fecha Límite: 30/11/2024</p>
-              <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">Ver Detalles</button>
-            </div>
-
-            <div className="bg-white shadow-md rounded p-6">
-              <h3 className="text-xl font-bold mb-2">Construcción de Viviendas</h3>
-              <p>Construcción de viviendas para familias en situación de vulnerabilidad.</p>
-              <p className="mt-2 text-gray-600">Fecha Límite: 15/10/2024</p>
-              <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">Ver Detalles</button>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">Estadísticas</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-blue-500 text-white p-6 rounded-lg shadow-md">
-              <h3 className="text-lg font-bold">Proyectos Activos</h3>
-              <p>3 Proyectos Activos</p>
-            </div>
-            <div className="bg-green-500 text-white p-6 rounded-lg shadow-md">
-              <h3 className="text-lg font-bold">Voluntarios Asignados</h3>
-              <p>9 Voluntarios Asignados</p>
-            </div>
-            <div className="bg-yellow-500 text-white p-6 rounded-lg shadow-md">
-              <h3 className="text-lg font-bold">Proyectos Completados</h3>
-              <p>2 Proyectos Completados</p>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
+        <Grid item xs={12}>
+          <Card>
+            <CardContent>
+              <Typography variant="h5">Gráfico de Proyectos</Typography>
+              <BarChart chartData={chartData} />
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 

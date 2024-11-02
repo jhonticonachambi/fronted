@@ -1,7 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import PostulationsTable from './PostulationsTable'; // Asegúrate de que la ruta sea correcta
+import API_URL from '../../config/apiConfig'; // Asegúrate de que la ruta sea correcta
 
 const ProjectDetails = () => {
   const { id } = useParams();
@@ -16,12 +17,12 @@ const ProjectDetails = () => {
   useEffect(() => {
     const fetchProjectData = async () => {
       try {
-        const projectResponse = await axios.get(`https://backend-rdf2.onrender.com/api/projects/${id}`, {
+        const projectResponse = await axios.get(`${API_URL}/projects/${id}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         setProject(projectResponse.data);
 
-        const postulationsResponse = await axios.get(`https://backend-rdf2.onrender.com/api/postulaciones/proyecto/${id}`);
+        const postulationsResponse = await axios.get(`${API_URL}/postulaciones/proyecto/${id}`);
         setPostulations(postulationsResponse.data);
       } catch (err) {
         setError('Error al cargar los detalles del proyecto o las postulaciones');
@@ -44,10 +45,10 @@ const ProjectDetails = () => {
   const updatePostulationsStatus = async () => {
     try {
       await axios.put(
-        'https://backend-rdf2.onrender.com/api/postulaciones/actualizar-estado',
+        `${API_URL}/postulaciones/actualizar-estado`,
         {
-          postulationIds: selectedPostulations,
-          status: 'aceptado',
+          ids: selectedPostulations,
+          nuevoEstado: 'aceptado',
         },
         {
           headers: { 'Content-Type': 'application/json' },
@@ -71,7 +72,7 @@ const ProjectDetails = () => {
   const fetchUserProfile = async (userId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`https://backend-rdf2.onrender.com/api/auth/${userId}`, {
+      const response = await axios.get(`${API_URL}/auth/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -123,41 +124,12 @@ const ProjectDetails = () => {
           {/* Tabla de usuarios postulados */}
           <h2 className="text-xl font-semibold mt-8">Usuarios Postulados</h2>
           {postulations.length > 0 ? (
-            <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden mt-4">
-              <thead className="bg-gray-200">
-                <tr>
-                  <th className="py-2 px-4">Seleccionar</th>
-                  <th className="py-2 px-4">Nombre</th>
-                  <th className="py-2 px-4">Email</th>
-                  <th className="py-2 px-4">Estado</th>
-                  <th className="py-2 px-4">Ver Perfil</th> {/* Nueva columna */}
-                </tr>
-              </thead>
-              <tbody>
-                {postulations.map((postulation) => (
-                  <tr key={postulation._id} className="border-t">
-                    <td className="py-2 px-4">
-                      <input
-                        type="checkbox"
-                        checked={selectedPostulations.includes(postulation._id)}
-                        onChange={() => handleCheckboxChange(postulation._id)}
-                      />
-                    </td>
-                    <td className="py-2 px-4">{postulation.userId.name}</td>
-                    <td className="py-2 px-4">{postulation.userId.email}</td>
-                    <td className="py-2 px-4">{postulation.status}</td>
-                    <td className="py-2 px-4">
-                      <button
-                        onClick={() => fetchUserProfile(postulation.userId._id)} // Llamar a la función para obtener el perfil
-                        className="text-blue-500 hover:underline"
-                      >
-                        Ver Perfil
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <PostulationsTable 
+              postulations={postulations} 
+              selectedPostulations={selectedPostulations} 
+              handleCheckboxChange={handleCheckboxChange} 
+              fetchUserProfile={fetchUserProfile} 
+            />
           ) : (
             <p className="mt-4 text-gray-600">No hay postulaciones registradas para este proyecto.</p>
           )}
@@ -175,7 +147,6 @@ const ProjectDetails = () => {
             Regresar
           </Link>
 
-          {/* Modal para mostrar el perfil del usuario */}
           {/* Modal para mostrar el perfil del usuario */}
           {showModal && selectedUser && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -204,7 +175,6 @@ const ProjectDetails = () => {
               <div className="fixed inset-0 bg-black opacity-50" onClick={closeModal}></div>
             </div>
           )}
-
         </>
       ) : (
         <p>Proyecto no encontrado.</p>

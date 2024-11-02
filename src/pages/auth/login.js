@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import voluntariadoIcon from '../../assets/img/icon/voluntario.png';
+import API_URL from '../../config/apiConfig'; // Asegúrate de que la ruta sea correcta
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("https://backend-rdf2.onrender.com/api/auth/login", {
+      const res = await axios.post(`${API_URL}/auth/login`, { // Usando API_URL
         email,
         password,
       });

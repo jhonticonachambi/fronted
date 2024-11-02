@@ -1,8 +1,10 @@
 
+// export default ProjectManagement;
 import React, { useState, useEffect } from 'react';
 import { FaTh, FaTable } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../../config/apiConfig'; 
 
 const ProjectManagement = () => {
   const [view, setView] = useState("cards");
@@ -15,7 +17,7 @@ const ProjectManagement = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get('https://backend-rdf2.onrender.com/api/projects', {
+          const response = await axios.get(`${API_URL}/projects`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         setProjects(response.data);
@@ -54,7 +56,6 @@ const ProjectManagement = () => {
           </ol>
         </nav>
 
-       
         {/* Botón para crear nuevo proyecto con margen superior */}
         <Link to="/admin/create-project" className="bg-green-500 text-white py-2 px-4 rounded inline-block mb-4">
           Crear Nuevo Proyecto
@@ -100,7 +101,7 @@ const ProjectManagement = () => {
                 <div className="p-4 flex flex-col flex-grow">
                   <h3 className="text-xl font-bold mb-2">{project.name}</h3>
                   <p className="flex-grow mb-4">{project.description}</p>
-                  <p className="text-gray-600">Fecha Límite: {project.endDate}</p>
+                  <p className="text-gray-600">Fecha Límite: {new Date(project.endDate).toLocaleDateString()}</p> {/* Formateo de la fecha */}
                   <Link to={`/project/${project._id}`} className="mt-2 bg-blue-500 text-white py-2 px-4 rounded self-start">Ver Detalles</Link>
                 </div>
               </div>
@@ -123,7 +124,7 @@ const ProjectManagement = () => {
                   <tr key={project._id} className="border-t">
                     <td className="py-2 px-4">{project.name}</td>
                     <td className="py-2 px-4">{project.description}</td>
-                    <td className="py-2 px-4">{project.endDate}</td>
+                    <td className="py-2 px-4">{new Date(project.endDate).toLocaleDateString()}</td> {/* Formateo de la fecha */}
                     <td className="py-2 px-4">
                       <Link to={`/project/${project._id}`} className="text-blue-500">Ver Detalles</Link>
                     </td>

@@ -1,18 +1,33 @@
 import React from 'react';
+import { TextField } from '@mui/material';
 
-const SearchBar = () => (
-  <div className="flex justify-center mt-8 mb-6"> {/* Flex para centrar */}
-    <div className="flex items-center w-full max-w-3xl"> {/* El ancho del contenedor sigue siendo 3xl */}
-      <input
-        type="text"
-        placeholder="Buscar proyectos..."
-        className="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-      />
-      <button className="bg-blue-600 text-white px-4 py-2 rounded-r-md hover:bg-blue-700 transition duration-300">
-        Buscar
-      </button>
-    </div>
-  </div>
-);
+const SearchBar = ({ searchTerm, setSearchTerm }) => {
+  return (
+    <TextField
+      label="Buscar Proyecto"
+      variant="outlined"
+      fullWidth
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      placeholder="Escribe el nombre del proyecto..."
+      InputProps={{
+        style: { borderBottom: 'none' } // Eliminar la línea de subrayado
+      }}
+      sx={{
+        '& .MuiOutlinedInput-root': {
+          '& fieldset': {
+            border: 'none', // Eliminar el borde
+          },
+          '&:hover fieldset': {
+            border: 'none', // Eliminar el borde al pasar el ratón
+          },
+          '&.Mui-focused fieldset': {
+            border: 'none', // Eliminar el borde cuando está enfocado
+          },
+        },
+      }}
+    />
+  );
+};
 
 export default SearchBar;

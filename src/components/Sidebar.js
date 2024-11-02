@@ -1,6 +1,6 @@
 // components/Sidebar.js
 import React, { useState } from 'react';
-import { FaHome, FaTasks, FaCog, FaBell, FaSignOutAlt, FaListAlt, FaChartBar,FaUser  } from 'react-icons/fa';
+import { FaClipboardList ,FaHome, FaTasks, FaCog, FaBell, FaSignOutAlt, FaListAlt, FaChartBar,FaUser  } from 'react-icons/fa';
 
 const Sidebar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -31,7 +31,11 @@ const Sidebar = () => {
           </li>
           <li className="flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md cursor-pointer">
             <FaChartBar className="h-6 w-6" />
-            <a href="/reports" className="flex-grow">Reportes</a>
+            <a href="/report" className="flex-grow">Reportes</a>
+          </li>
+          <li className="flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md cursor-pointer">
+            <FaClipboardList  className="h-6 w-6" />
+            <a href="/TaskManagement" className="flex-grow">Tareas</a>
           </li>
         </ul>
       </nav>

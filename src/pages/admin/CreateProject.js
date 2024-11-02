@@ -1,7 +1,16 @@
-//PAGES/ADMIN/CREATEPROJECT.JS
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { 
+  Container, 
+  TextField, 
+  Button, 
+  Typography, 
+  Snackbar, 
+  Alert, 
+  Breadcrumbs 
+} from '@mui/material';
+import API_URL from '../../config/apiConfig'; // Importar la configuración de la API
 
 const CreateProject = () => {
   const [formData, setFormData] = useState({
@@ -18,8 +27,8 @@ const CreateProject = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [userId, setUserId] = useState(''); // Estado para almacenar el _id del usuario
-  const [successMessage, setSuccessMessage] = useState(''); // Estado para el mensaje de éxito
+  const [successMessage, setSuccessMessage] = useState('');
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const navigate = useNavigate(); // Para redirigir si es necesario
 
   useEffect(() => {
@@ -29,7 +38,6 @@ const CreateProject = () => {
       navigate('/login'); // Redirige al login si no hay token
     } else {
       const storedUserId = localStorage.getItem('userId'); // Obtén el _id del usuario
-      setUserId(storedUserId); // Establece el _id del usuario en el estado
       setFormData((prevData) => ({
         ...prevData,
         organizer: storedUserId, // Establecer automáticamente el _id del organizador
@@ -53,11 +61,13 @@ const CreateProject = () => {
     setSuccessMessage('');
 
     try {
-      const response = await axios.post('https://backend-rdf2.onrender.com/api/projects', formData);
+      // Usa la URL de la API importada
+      const response = await axios.post(`${API_URL}/projects`, formData);
       console.log('Proyecto creado:', response.data);
       
       // Mostrar mensaje de éxito
-      setSuccessMessage('Proyecto creado exitosamente.'); 
+      setSuccessMessage('Proyecto creado exitosamente.');
+      setOpenSnackbar(true); // Abrir Snackbar
 
     } catch (error) {
       console.error('Error al crear el proyecto:', error.response.data);
@@ -72,69 +82,67 @@ const CreateProject = () => {
     }
   };
 
-  const handleAccept = () => {
-    navigate('/project-management'); // Redirige a Project Management
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+    navigate('/project-management'); // Redirige a Project Management después de cerrar el Snackbar
   };
 
   return (
-    <div className="container mx-auto">
+    <Container maxWidth="sm" sx={{ mt: 4 }}>
       {/* Breadcrumbs */}
-      <nav className="mb-4">
-        <ol className="list-reset flex text-blue-600">
-          <li>
-            <Link to="/dashboard" className="text-blue-500 hover:underline">Dashboard</Link>
-          </li>
-          <li>
-            <span className="mx-2">/</span>
-            <Link to="/project-management" className="text-blue-500 hover:underline">Project Management</Link>
-          </li>
-          <li>
-            <span className="mx-2">/</span>
-            <span className="text-gray-600">Nuevo Proyecto</span>
-          </li>
-        </ol>
-      </nav>
+      <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
+        <Link to="/dashboard">Dashboard</Link>
+        <Link to="/project-management">Project Management</Link>
+        <Typography color="text.primary">Nuevo Proyecto</Typography>
+      </Breadcrumbs>
 
-      <h2 className="text-2xl mb-4">Crear Proyecto</h2>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Crear Proyecto
+      </Typography>
 
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8">
-        {successMessage ? (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-            <strong className="font-bold">Éxito!</strong>
-            <span className="block sm:inline">{successMessage}</span>
-            <button
-              onClick={handleAccept}
-              className="mt-2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"
-            >
-              Aceptar
-            </button>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {Object.keys(formData).map((key) => (
-              <div key={key} className="flex flex-col mb-4">
-                <label className="mb-1 text-lg text-left" htmlFor={key}>
-                  {key.charAt(0).toUpperCase() + key.slice(1)}
-                </label>
-                <input
-                  type={key.includes('Date') ? 'date' : 'text'}
-                  name={key}
-                  id={key}
-                  value={formData[key]}
-                  onChange={handleChange}
-                  className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  required
-                  readOnly={key === 'organizer'} // Hacer el campo de organizador de solo lectura
-                />
-                {errors[key] && <span className="text-red-500 text-sm">{errors[key]}</span>}
-              </div>
-            ))}
-            <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition">Crear Proyecto</button>
-            {errors.general && <span className="text-red-500 text-sm">{errors.general}</span>}
-          </form>
-        )}
-      </div>
-    </div>
+      <form onSubmit={handleSubmit} noValidate>
+        {Object.keys(formData).map((key) => (
+          <TextField
+            key={key}
+            name={key}
+            label={key.charAt(0).toUpperCase() + key.slice(1)}
+            type={key.includes('Date') ? 'date' : 'text'}
+            value={formData[key]}
+            onChange={handleChange}
+            fullWidth
+            required
+            InputLabelProps={key === 'organizer' ? { shrink: true } : {}}
+            inputProps={{ 
+              readOnly: key === 'organizer', // Campo de organizador solo lectura
+              style: { display: key === 'organizer' ? 'none' : 'block' } // Ocultar el campo de organizador
+            }}
+            sx={{ mb: 2 }}
+            error={!!errors[key]}
+            helperText={errors[key] || ''}
+          />
+        ))}
+        {/* Campo del organizador invisible pero presente en el formulario */}
+        <input 
+          type="hidden" 
+          name="organizer" 
+          value={formData.organizer} 
+        />
+        <Button type="submit" variant="contained" color="primary" fullWidth>
+          Crear Proyecto
+        </Button>
+        {errors.general && <Typography color="error">{errors.general}</Typography>}
+      </form>
+
+      <Snackbar 
+        open={openSnackbar} 
+        autoHideDuration={6000} 
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+          {successMessage}
+        </Alert>
+      </Snackbar>
+    </Container>
   );
 };
 
