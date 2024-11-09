@@ -16,9 +16,9 @@ const Header = () => {
       <h2>Voluntariado</h2>
       <nav>
         <ul>
-          <li><Link to="/platform">Inicio</Link></li>
-          <li><Link to="/projects">Proyectos</Link></li>
-          <li><Link to="/profile">Perfil</Link></li>
+          <li><Link to="/plataforma">Inicio</Link></li>
+          <li><Link to="/lista-proyectos">Proyectos</Link></li>
+          <li><Link to="/perfil">Perfil</Link></li>
           <li>
             <button onClick={handleLogout} style={{ color: 'red' }}>
               Cerrar Sesión

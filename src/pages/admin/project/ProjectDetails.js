@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import PostulationsTable from './PostulationsTable'; // Asegúrate de que la ruta sea correcta
-import API_URL from '../../config/apiConfig'; // Asegúrate de que la ruta sea correcta
+import PostulationsTable from '../postulation/PostulationsTable'; // Asegúrate de que la ruta sea correcta
+import API_URL from '../../../config/apiConfig'; // Asegúrate de que la ruta sea correcta
 
 const ProjectDetails = () => {
   const { id } = useParams();

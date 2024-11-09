@@ -14,7 +14,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
 import pdfMake from 'pdfmake/build/pdfmake';
-import API_URL from '../../config/apiConfig'; // Importa la configuración de la API
+import API_URL from '../../../config/apiConfig'; // Importa la configuración de la API
 
 // Registro de componentes de Chart.js
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);

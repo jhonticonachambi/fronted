@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { FaTh, FaTable } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import API_URL from '../../config/apiConfig'; 
+import API_URL from '../../../config/apiConfig'; 
 
 const ProjectManagement = () => {
   const [view, setView] = useState("cards");
@@ -57,7 +57,7 @@ const ProjectManagement = () => {
         </nav>
 
         {/* Botón para crear nuevo proyecto con margen superior */}
-        <Link to="/admin/create-project" className="bg-green-500 text-white py-2 px-4 rounded inline-block mb-4">
+        <Link to="/crear-proyecto" className="bg-green-500 text-white py-2 px-4 rounded inline-block mb-4">
           Crear Nuevo Proyecto
         </Link>
 

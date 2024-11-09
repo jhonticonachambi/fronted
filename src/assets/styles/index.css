@@ -1,4 +1,4 @@
-/* Navbar */
+/* 
 .navbar-home {
   background-color: #001f3f;
   color: white;
@@ -38,7 +38,6 @@
  padding: 50px;
 }
 
-/* Hero Section */
 .hero-home {
   background-color: #007bff;
   color: white;
@@ -74,7 +73,6 @@
   color: white;
 }
 
-/* Beneficios */
 .benefits-home {
   padding: 40px 20px;
   text-align: center;
@@ -109,7 +107,6 @@
   color: #666;
 }
 
-/* Galería de Proyectos */
 .gallery-home {
   padding: 40px 20px;
   text-align: center;
@@ -138,7 +135,6 @@
   border-radius: 10px;
 }
 
-/* Llamada a la acción final */
 .cta-footer-home {
   background-color: #007bff;
   color: white;
@@ -166,7 +162,6 @@
 }
 
 
-/* Footer sticky */
 .footer-home {
   background-color: #1c1c1c;
   color: white;
@@ -180,4 +175,4 @@
 .footer-home p {
   margin: 0;
   font-size: 0.9rem;
-}
+} */

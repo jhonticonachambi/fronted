@@ -28,7 +28,7 @@ function Login() {
       if (res.data.role === "admin") {
         navigate("/dashboard"); // Redirige al dashboard si es admin
       } else {
-        navigate("/platform"); // Redirige a la plataforma si es voluntario
+        navigate("/plataforma"); // Redirige a la plataforma si es voluntario
       }
     } catch (err) {
       setError("Error al iniciar sesión, revisa tus credenciales.");

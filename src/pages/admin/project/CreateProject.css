@@ -1,0 +1,5 @@
+.same-width {
+    width: 100%; /* Asegura que todos los inputs tengan el mismo ancho */
+    box-sizing: border-box; /* Incluye el padding y el borde en el ancho total */
+  }
+  

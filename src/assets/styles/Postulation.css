@@ -1,4 +1,4 @@
-/* Estilos generales para el contenedor de la postulación */
+/* 
 .postulation-container {
   max-width: 100%;
   margin: 0 auto;
@@ -6,7 +6,7 @@
   font-family: Arial, sans-serif;
 }
 
-/* Banner de la página */
+
 .banner {
   background-color: #f0f0f0;
   padding: 30px;
@@ -37,8 +37,6 @@
 .apply-button:hover {
   background-color: #218838;
 }
-
-/* Estilos para el contenido del proyecto */
 .postulation-content {
   margin-top: 20px;
   padding: 10px 300px;
@@ -76,7 +74,7 @@ ul li, ol li {
   margin-bottom: 10px;
 }
 
-/* Estado del Proyecto */
+
 .project-status {
   margin-top: 20px;
 }
@@ -89,7 +87,7 @@ ul li, ol li {
   font-size: 1rem;
 }
 
-/* Ajustes de diseño responsivo */
+
 @media (max-width: 768px) {
   .banner {
     flex-direction: column;
@@ -101,4 +99,4 @@ ul li, ol li {
     width: 100%;
     padding: 15px 0;
   }
-}
+} */

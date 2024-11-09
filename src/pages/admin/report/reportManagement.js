@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import API_URL from '../../config/apiConfig'; // Importa la configuración de la API
+import API_URL from '../../../config/apiConfig'; // Importa la configuración de la API
 
 const ReportManagement = () => {
   const [projects, setProjects] = useState([]);
@@ -42,7 +42,7 @@ const ReportManagement = () => {
           <Card key={project._id} className="mb-4">
             <CardContent>
               <Typography variant="h5">
-                <Link to={`/report/${project._id}`} className="text-blue-500 hover:underline">
+                <Link to={`/reporte/${project._id}`} className="text-blue-500 hover:underline">
                   {project.name}
                 </Link>
               </Typography>
@@ -53,7 +53,7 @@ const ReportManagement = () => {
                 variant="contained" 
                 color="primary" 
                 component={Link} 
-                to={`/report/${project._id}`} 
+                to={`/reporte/${project._id}`} 
                 sx={{ mt: 1 }}
               >
                 Ver Reporte

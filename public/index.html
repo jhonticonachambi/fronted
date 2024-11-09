@@ -2,7 +2,31 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Plataforma de Voluntariado" />
+    <meta name="author" content="Tu Nombre o Empresa" />
     <title>Voluntariado</title>
+    
+    <!-- Favicon (opcional) -->
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+
+    <!-- Importar CSS global (opcional, si tienes estilos adicionales) -->
+    <link rel="stylesheet" href="%PUBLIC_URL%/styles.css" />
+
+    <!-- Estilos adicionales para asegurar desplazamiento en móviles -->
+    <style>
+      html, body {
+        height: 100%;
+        overflow-y: auto; /* Permitir desplazamiento en el body */
+        -webkit-overflow-scrolling: touch; /* Suavizar desplazamiento en iOS */
+      }
+      #root {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div> <!-- Este es el contenedor donde React montará la aplicación -->
