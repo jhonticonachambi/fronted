@@ -6,7 +6,7 @@ const ProjectCard = ({ title, description, status, imageSrc, projectId }) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate(`/projects/postulation/${projectId}`);
+    navigate(`/postulacion/${projectId}`);
   };
 
   return (

@@ -1,4 +1,3 @@
-// components/PostulationsTable.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -64,7 +63,7 @@ const PostulationsTable = ({ searchTerm }) => {
               <TableCell align="center">{p.status}</TableCell>
               <TableCell align="center">
                 {p.status.toLowerCase() === 'aceptado' && (
-                  <Link to={`/proyectos/${p.projectId._id}`}>
+                  <Link to={`/taskview/${p.projectId._id}`}>
                     <Button variant="contained" color="primary">
                       Ver Proyecto
                     </Button>

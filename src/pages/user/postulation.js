@@ -55,7 +55,8 @@ const Postulation = () => {
       alert('Postulación realizada con éxito');
     } catch (err) {
       console.error('Error al realizar la postulación', err);
-      alert('Error al realizar la postulación');
+      const errorMessage = err.response?.data?.mensaje || 'Error al realizar la postulación';
+      alert(errorMessage); // Muestra el mensaje específico desde el backend si existe
     }
   };
 
