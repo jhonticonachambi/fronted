@@ -1,8 +1,10 @@
+
 import React, { useEffect, useState } from 'react';
 import { Container, Typography, Card, CardContent, Grid } from '@mui/material';
 import BarChart from '../../components/BarChart';
 import axios from 'axios';
 import API_URL from '../../config/apiConfig'; // Importar API_URL
+import ProjectTasksChart from './ProjectTasksChart'; // Asegúrate de que esta importación sea correcta y única
 
 const Dashboard = () => {
   const [projects, setProjects] = useState([]);
@@ -14,13 +16,13 @@ const Dashboard = () => {
     try {
       const projectsResponse = await axios.get(`${API_URL}/projects`); // Usar API_URL
       setProjects(projectsResponse.data);
-  
+
       const volunteersResponse = await axios.get(`${API_URL}/auth/count/volunteers`); // Usar API_URL
       setUsersCount(volunteersResponse.data.count);
-  
+
       const tasksResponse = await axios.get(`${API_URL}/tasks/count`); // Usar API_URL
       setTasksCount(tasksResponse.data.count);
-  
+
       setChartData({
         labels: projectsResponse.data.map(project => project.name),
         values: projectsResponse.data.map(project => project.value || 0)
@@ -29,7 +31,7 @@ const Dashboard = () => {
       console.error('Error fetching dashboard data:', error);
     }
   };
-  
+
   useEffect(() => {
     fetchDashboardData();
   }, []);
@@ -95,15 +97,28 @@ const Dashboard = () => {
           </Card>
         </Grid>
 
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Card>
             <CardContent>
               <Typography variant="h5">Gráfico de Proyectos</Typography>
               <BarChart chartData={chartData} />
             </CardContent>
           </Card>
+        </Grid> */}
+
+
+        {/* Agrega el componente ProjectTasksChart aquí */}
+        <Grid item xs={12} sm={6} md={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h5">Taller de Educación Financiera</Typography>
+              <ProjectTasksChart projectId="671d094dee1611fe6448e3c6" />
+            </CardContent>
+          </Card>
         </Grid>
       </Grid>
+
+      
     </Container>
   );
 };

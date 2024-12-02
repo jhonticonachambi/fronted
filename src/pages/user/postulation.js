@@ -1,3 +1,4 @@
+//user/postulation
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -48,14 +49,14 @@ const Postulation = () => {
 
   const handlePostulation = async () => {
     try {
-      await axios.post(`${API_URL}/postulaciones`, {
+      await axios.post(`${API_URL}/postulations`, {
         projectId: project._id,
         userId: userId,
       });
       alert('Postulación realizada con éxito');
     } catch (err) {
       console.error('Error al realizar la postulación', err);
-      const errorMessage = err.response?.data?.mensaje || 'Error al realizar la postulación';
+      const errorMessage = err.response?.data?.message || 'Error al realizar la postulación';
       alert(errorMessage); // Muestra el mensaje específico desde el backend si existe
     }
   };
@@ -74,13 +75,13 @@ const Postulation = () => {
         {project.bannerImage && (
           <CardMedia
             component="img"
-            height="240" // Cambia esta propiedad para ajustar la altura
+            height="240"
             image={project.bannerImage}
             alt="Imagen del Proyecto"
             sx={{
-              objectFit: 'cover', // Asegúrate de que la imagen cubra el espacio disponible
-              width: '100%', // Asegúrate de que la imagen ocupe el 100% del ancho
-              maxHeight: '240px', // Limita la altura máxima
+              objectFit: 'cover',
+              width: '100%',
+              maxHeight: '240px',
             }}
           />
         )}

@@ -19,7 +19,7 @@ const PostulationsTable = ({ searchTerm }) => {
       }
 
       try {
-        const response = await axios.get(`${API_URL}/postulaciones/usuario/${userId}`); // Usar la URL de la API
+        const response = await axios.get(`${API_URL}/postulations/user/${userId}`); // Usar la URL de la API
         setPostulations(response.data);
         setLoading(false);
       } catch (err) {
@@ -39,8 +39,9 @@ const PostulationsTable = ({ searchTerm }) => {
     return <div>{error}</div>;
   }
 
+  // Filtrado de postulaciones
   const filteredPostulations = postulations.filter(p => 
-    p.projectId.name.toLowerCase().includes(searchTerm.toLowerCase())
+    p.projectId && p.projectId.name && p.projectId.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -59,7 +60,7 @@ const PostulationsTable = ({ searchTerm }) => {
         <TableBody>
           {filteredPostulations.map((p) => (
             <TableRow key={p._id} className="hover:bg-gray-100">
-              <TableCell align="center">{p.projectId.name}</TableCell>
+              <TableCell align="center">{p.projectId ? p.projectId.name : 'Sin nombre'}</TableCell>
               <TableCell align="center">{p.status}</TableCell>
               <TableCell align="center">
                 {p.status.toLowerCase() === 'aceptado' && (

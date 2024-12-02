@@ -3,12 +3,18 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import voluntariadoIcon from '../../assets/img/icon/voluntario.png';
 import API_URL from '../../config/apiConfig'; // Asegúrate de que la ruta sea correcta
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Importar íconos de ojo
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +37,11 @@ function Login() {
         navigate("/plataforma"); // Redirige a la plataforma si es voluntario
       }
     } catch (err) {
-      setError("Error al iniciar sesión, revisa tus credenciales.");
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message); // Mostrar mensaje de error específico del backend
+      } else {
+        setError("Error al iniciar sesión, revisa tus credenciales.");
+      }
     }
   };
 
@@ -60,13 +70,22 @@ function Login() {
 
           <div className="mb-4">
             <label className="block text-gray-700 mb-2">Contraseña</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-              placeholder="Ingresa tu contraseña"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                placeholder="Ingresa tu contraseña"
+              />
+              <button 
+                type="button" 
+                onClick={toggleShowPassword} 
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent border-none cursor-pointer"
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </div>
 
           {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
@@ -80,7 +99,7 @@ function Login() {
         </form>
 
         <div className="text-center mt-4">
-          <a href="/" className="text-blue-500 hover:underline">
+          <a href="/forgot-password" className="text-blue-500 hover:underline">
             ¿Olvidaste tu contraseña? Recupérala aquí
           </a>
         </div>

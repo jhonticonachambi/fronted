@@ -22,7 +22,7 @@ const ProjectDetails = () => {
         });
         setProject(projectResponse.data);
 
-        const postulationsResponse = await axios.get(`${API_URL}/postulaciones/proyecto/${id}`);
+        const postulationsResponse = await axios.get(`${API_URL}/postulations/project/${id}`);
         setPostulations(postulationsResponse.data);
       } catch (err) {
         setError('Error al cargar los detalles del proyecto o las postulaciones');
@@ -45,10 +45,10 @@ const ProjectDetails = () => {
   const updatePostulationsStatus = async () => {
     try {
       await axios.put(
-        `${API_URL}/postulaciones/actualizar-estado`,
+        `${API_URL}/postulations/update-status`,
         {
           ids: selectedPostulations,
-          nuevoEstado: 'aceptado',
+          newStatus: 'aceptado',
         },
         {
           headers: { 'Content-Type': 'application/json' },
