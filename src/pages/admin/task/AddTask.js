@@ -76,7 +76,7 @@ const AddTask = () => {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
             });
             setOpenDialog(false);
-            navigate('/Tareas');
+            navigate('/gestion-de-tareas');
         } catch (error) {
             console.error('Error adding task:', error);
         }

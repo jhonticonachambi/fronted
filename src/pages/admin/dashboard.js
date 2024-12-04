@@ -74,7 +74,7 @@ const Dashboard = () => {
                     <tr>
                       <th style={{ border: '1px solid #ccc', padding: '8px' }}>Nombre</th>
                       <th style={{ border: '1px solid #ccc', padding: '8px' }}>Descripción</th>
-                      <th style={{ border: '1px solid #ccc', padding: '8px' }}>Acciones</th>
+                      <th style={{ border: '1px solid #ccc', padding: '8px' }}>Estado</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -82,9 +82,8 @@ const Dashboard = () => {
                       <tr key={project._id}>
                         <td style={{ border: '1px solid #ccc', padding: '8px' }}>{project.name}</td>
                         <td style={{ border: '1px solid #ccc', padding: '8px' }}>{project.description}</td>
-                        <td style={{ border: '1px solid #ccc', padding: '8px' }}>
-                          <button onClick={() => console.log(`Ver detalles de ${project.name}`)}>Ver</button>
-                        </td>
+                        <td style={{ border: '1px solid #ccc', padding: '8px' }}>{project.status}</td>
+                        
                       </tr>
                     ))}
                   </tbody>

@@ -55,7 +55,7 @@ const ProjectTasksChart = ({ projectId }) => {
         } else {
           setChartData({
             labels: [],
-            datasets: [{ label: 'Task Statuses', data: [] }]
+            datasets: [{ label: 'Estados de Tareas', data: [] }]
           });
         }
       } catch (error) {
@@ -68,7 +68,7 @@ const ProjectTasksChart = ({ projectId }) => {
 
   return (
     <div>
-      <h2>Estado de Tareas</h2>
+      <h6>Estado de Tareas</h6>
       <Bar data={chartData} />
     </div>
   );

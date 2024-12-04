@@ -89,13 +89,9 @@ const TaskList = () => {
             {/* Breadcrumb */}
             <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: '20px' }}>
                 <Link color="inherit" href="/dashboard" underline="hover">Dashboard</Link>
-                <Typography color="textPrimary">Tareas</Typography>
+                <Typography color="textPrimary">Gestión de Tareas</Typography>
             </Breadcrumbs>
 
-            {/* Título */}
-            <Typography variant="h4" align="center" gutterBottom>
-                Gestión de Tareas
-            </Typography>
 
             {/* Filtros */}
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>

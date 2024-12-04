@@ -93,7 +93,7 @@ const CreateProject = () => {
                 { name: 'name', label: 'Nombre del Proyecto' },
                 { name: 'description', label: 'Descripción' },
                 { name: 'requirements', label: 'Requerimientos' },
-                { name: 'type', label: 'Tipo de Proyecto' },
+                { name: 'type', label: 'Tipo' },
                 { name: 'startDate', label: 'Fecha de Inicio', type: 'date' },
                 { name: 'endDate', label: 'Fecha de Fin', type: 'date' },
                 { name: 'volunteersRequired', label: 'Voluntarios Requeridos' },
