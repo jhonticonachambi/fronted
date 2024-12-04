@@ -19,6 +19,7 @@ const Header = () => {
           <li><Link to="/plataforma">Inicio</Link></li>
           <li><Link to="/lista-proyectos">Proyectos</Link></li>
           <li><Link to="/perfil">Perfil</Link></li>
+          <li><Link to="/Notification">Notificaciones</Link></li>
           <li>
             <button onClick={handleLogout} style={{ color: 'red' }}>
               Cerrar Sesión

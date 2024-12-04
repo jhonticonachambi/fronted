@@ -45,10 +45,11 @@ const ProjectDetails = () => {
   const updatePostulationsStatus = async () => {
     try {
       await axios.put(
-        `${API_URL}/postulations/update-status`,
+        // `${API_URL}/postulations/update-status`,
+        `${API_URL}/postulations/status`,
         {
           ids: selectedPostulations,
-          newStatus: 'aceptado',
+          newStatus: 'accepted',
         },
         {
           headers: { 'Content-Type': 'application/json' },
@@ -58,7 +59,7 @@ const ProjectDetails = () => {
       setPostulations((prevPostulations) =>
         prevPostulations.map((postulation) =>
           selectedPostulations.includes(postulation._id)
-            ? { ...postulation, status: 'aceptado' }
+            ? { ...postulation, status: 'accepted' }
             : postulation
         )
       );
@@ -102,7 +103,7 @@ const ProjectDetails = () => {
           </li>
           <li>
             <span className="mx-2">/</span>
-            <Link to="/project-management" className="text-blue-500 hover:underline">Project Management</Link>
+            <Link to="/gestion-de-proyectos" className="text-blue-500 hover:underline">Gestión de Proyectos</Link>
           </li>
           <li>
             <span className="mx-2">/</span>
@@ -143,7 +144,7 @@ const ProjectDetails = () => {
             Aceptar Seleccionados
           </button>
 
-          <Link to="/project-management" className="mt-4 inline-block bg-gray-500 text-white py-2 px-4 rounded">
+          <Link to="/gestion-de-proyectos" className="mt-4 inline-block bg-gray-500 text-white py-2 px-4 rounded">
             Regresar
           </Link>
 

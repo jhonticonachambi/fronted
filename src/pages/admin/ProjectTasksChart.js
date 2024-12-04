@@ -34,7 +34,7 @@ const ProjectTasksChart = ({ projectId }) => {
     const fetchProjectAndTasks = async () => {
       try {
         const response = await axios.get(`${API_URL}/projects/${projectId}/tasks`);
-        const { project, tasks } = response.data;
+        const {tasks} = response.data;
 
         if (tasks && tasks.length > 0) {
           const taskStatuses = tasks.reduce((acc, task) => {

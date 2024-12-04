@@ -63,7 +63,7 @@ const PostulationsTable = ({ searchTerm }) => {
               <TableCell align="center">{p.projectId ? p.projectId.name : 'Sin nombre'}</TableCell>
               <TableCell align="center">{p.status}</TableCell>
               <TableCell align="center">
-                {p.status.toLowerCase() === 'aceptado' && (
+                {p.status.toLowerCase() === 'accepted' && (
                   <Link to={`/taskview/${p.projectId._id}`}>
                     <Button variant="contained" color="primary">
                       Ver Proyecto

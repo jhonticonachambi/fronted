@@ -94,8 +94,8 @@ const ProjectManagement = () => {
               />
               <div className="p-4 flex flex-col flex-grow">
                 <h3 className="text-xl font-bold mb-2">{project.name}</h3>
-                <p className="flex-grow text-gray-600 mb-2">{project.description}</p>
-                <p className="text-gray-600 mb-4">Fecha Límite: {new Date(project.endDate).toLocaleDateString()}</p>
+                {/* <p className="flex-grow text-gray-600 mb-2">{project.description}</p>
+                <p className="text-gray-600 mb-4">Fecha Límite: {new Date(project.endDate).toLocaleDateString()}</p> */}
                 <Link to={`/proyecto/${project._id}`} className="mt-auto bg-blue-500 text-white py-2 px-4 rounded text-center">
                   Ver Detalles
                 </Link>

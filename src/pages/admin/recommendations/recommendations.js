@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Typography, Card, CardContent, Grid, Avatar, Chip } from '@mui/material';
 import { FaCheckCircle, FaBriefcase, FaCalendarAlt } from 'react-icons/fa'; // Importa iconos de Font Awesome
-import axios from 'axios';
-import API_URL from '../../../config/apiConfig'; // Ajusta la ruta según tu estructura
 
 // Datos simulados (puedes obtenerlos desde tu backend)
 const mockVolunteers = [

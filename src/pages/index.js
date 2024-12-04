@@ -18,7 +18,6 @@ export default function Home() {
               <li><a href="/" className="hover:text-blue-300">Inicio</a></li>
               <li><a href="/register" className="hover:text-blue-300">Registro</a></li>
               <li><a href="/login" className="hover:text-blue-300">Iniciar Sesión</a></li>
-              <li><a href="/login" className="hover:text-blue-300"></a></li>
             </ul>
           </div>
         </nav>

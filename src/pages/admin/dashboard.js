@@ -1,7 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { Container, Typography, Card, CardContent, Grid } from '@mui/material';
-import BarChart from '../../components/BarChart';
 import axios from 'axios';
 import API_URL from '../../config/apiConfig'; // Importar API_URL
 import ProjectTasksChart from './ProjectTasksChart'; // Asegúrate de que esta importación sea correcta y única
@@ -10,7 +9,7 @@ const Dashboard = () => {
   const [projects, setProjects] = useState([]);
   const [usersCount, setUsersCount] = useState(0);
   const [tasksCount, setTasksCount] = useState(0);
-  const [chartData, setChartData] = useState({ labels: [], values: [] });
+  const [setChartData] = useState({ labels: [], values: [] });
 
   const fetchDashboardData = async () => {
     try {
@@ -97,16 +96,6 @@ const Dashboard = () => {
           </Card>
         </Grid>
 
-        {/* <Grid item xs={12}>
-          <Card>
-            <CardContent>
-              <Typography variant="h5">Gráfico de Proyectos</Typography>
-              <BarChart chartData={chartData} />
-            </CardContent>
-          </Card>
-        </Grid> */}
-
-
         {/* Agrega el componente ProjectTasksChart aquí */}
         <Grid item xs={12} sm={6} md={6}>
           <Card>
@@ -117,7 +106,6 @@ const Dashboard = () => {
           </Card>
         </Grid>
       </Grid>
-
       
     </Container>
   );
