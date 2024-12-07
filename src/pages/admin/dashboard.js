@@ -100,7 +100,7 @@ const Dashboard = () => {
           <Card>
             <CardContent>
               <Typography variant="h5">Taller de Educación Financiera</Typography>
-              <ProjectTasksChart projectId="671d094dee1611fe6448e3c6" />
+              <ProjectTasksChart projectId="6750a88dfeb4ee402ad3fdc7" />
             </CardContent>
           </Card>
         </Grid>
