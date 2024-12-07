@@ -1,6 +1,7 @@
 // pages/user/Notifications
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import API_URL from '../../config/apiConfig';
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -15,7 +16,7 @@ const Notifications = () => {
       }
 
       try {
-        const response = await axios.post('http://localhost:5000/api/notification/notifications', {
+        const response = await axios.post(`${API_URL}/notification/notifications`, {
           userId: userId  // Enviar el userId en el cuerpo de la solicitud
         });
         setNotifications(response.data.notifications);
