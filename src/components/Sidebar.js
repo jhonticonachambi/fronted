@@ -28,7 +28,7 @@ const Sidebar = () => {
           </li>
           <li className="flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md cursor-pointer">
             <FaTasks className="h-6 w-6" />
-            <a href="/gestion-de-postulacion" className="flex-grow">Gestion de Postulados</a>
+            <a href="/gestion-de-postulacion" className="flex-grow">Gestion de Postulantes</a>
           </li>
           <li className="flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md cursor-pointer">
             <FaChartBar className="h-6 w-6" />

@@ -120,7 +120,7 @@ const CreateProject = () => {
             </div>
 
             <input type="hidden" name="organizer" value={formData.organizer} />
-
+{/* 
             <div className="form-check mt-4">
               <input
                 className="form-check-input"
@@ -131,7 +131,7 @@ const CreateProject = () => {
               <label className="form-check-label" htmlFor="terms">
                 Acepto los términos y condiciones
               </label>
-            </div>
+            </div> */}
 
             <div className="mt-4">
               <button type="submit" className="btn btn-primary w-100">
