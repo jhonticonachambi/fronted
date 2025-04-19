@@ -5,7 +5,7 @@ import { TextField, Button, Box, Typography, FormControlLabel, Checkbox } from '
 import { useNavigate } from 'react-router-dom';
 import API_URL from '../../config/apiConfig';
 
-const skillsOptions = ['JavaScript', 'Python', 'Java', 'C++', 'React', 'Node.js']; // Opciones de habilidades
+const skillsOptions = ['SQL', 'Python', 'Excel', 'Adobe', 'Facebook ads']; // Opciones de habilidades
 
 const validationSchema = Yup.object({
   name: Yup.string().required('Nombre es requerido'),
@@ -36,14 +36,7 @@ const Register = () => {
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-      name: '',
-      dni: '',
-      email: '',
-      address: '',
-      password: '',
-      confirmPassword: '',
-      skills: [],
-      phone: ''
+      name: '', dni: '', email: '', address: '', password: '', confirmPassword: '', skills: [], phone: ''
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {

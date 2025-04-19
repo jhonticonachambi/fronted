@@ -1,8 +1,73 @@
-// components/ProjectCard.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { 
+  Card, 
+  CardMedia, 
+  CardContent, 
+  CardActions, 
+  Typography, 
+  Button, 
+  Chip,
+  Box,
+  Avatar,
+  Divider,
+  styled
+} from '@mui/material';
+import { 
+  CalendarToday, 
+  People, 
+  ArrowForward,
+  Place
+} from '@mui/icons-material';
+import { deepPurple, green, orange, grey } from '@mui/material/colors';
 
-const ProjectCard = ({ title, description, status, imageSrc, projectId }) => {
+const StyledCard = styled(Card)(({ theme }) => ({
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  transition: 'transform 0.3s, box-shadow 0.3s',
+  '&:hover': {
+    transform: 'translateY(-8px)',
+    boxShadow: theme.shadows[8]
+  },
+  borderRadius: 12,
+  overflow: 'hidden'
+}));
+
+const StatusChip = styled(Chip)(({ status }) => ({
+  position: 'absolute',
+  top: 16,
+  right: 16,
+  fontWeight: 600,
+  backgroundColor: status === 'activo' 
+    ? green[50] 
+    : status === 'completado' 
+      ? grey[100] 
+      : orange[50],
+  color: status === 'activo' 
+    ? green[800] 
+    : status === 'completado' 
+      ? grey[600] 
+      : orange[800],
+  border: `1px solid ${status === 'activo' 
+    ? green[100] 
+    : status === 'completado' 
+      ? grey[300] 
+      : orange[100]}`,
+  zIndex: 1
+}));
+
+const ProjectCard = ({ 
+  title, 
+  description, 
+  status, 
+  imageSrc, 
+  projectId, 
+  organization,
+  startDate,
+  volunteersNeeded,
+  location
+}) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
@@ -10,26 +75,98 @@ const ProjectCard = ({ title, description, status, imageSrc, projectId }) => {
   };
 
   return (
-    <div
-      className="project-card bg-white rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105 cursor-pointer"
-      onClick={handleCardClick}
-    >
-      <img src={imageSrc} alt={title} className="w-full h-32 object-cover" />
-      <div className="p-4">
-        <h2 className="text-lg font-bold mb-2">{title}</h2>
-        <p className="text-gray-700 mb-4">{description}</p>
-        <p
-          className={`inline-block px-3 py-1 rounded-full text-white text-sm font-semibold ${status === 'activo' ? 'bg-green-500' : status === 'pendiente' ? 'bg-yellow-500' : 'bg-gray-400'
-            }`}
-        >
-          {status}
-        </p>
+    <StyledCard elevation={4}>
+      <Box sx={{ position: 'relative' }}>
+        <CardMedia
+          component="img"
+          height="180"
+          image={imageSrc || '/default-project.jpg'}
+          alt={title}
+        />
+        <StatusChip 
+          status={status} 
+          label={status === 'activo' ? 'Activo' : status === 'completado' ? 'Completado' : 'Pendiente'} 
+        />
+      </Box>
 
-        <button className="mt-4 w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition">
-          Ver Más
-        </button>
-      </div>
-    </div>
+      <CardContent sx={{ flexGrow: 1 }}>
+        <Typography variant="h6" component="h3" gutterBottom sx={{ fontWeight: 700 }}>
+          {title}
+        </Typography>
+        
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+          <Avatar 
+            sx={{ 
+              width: 24, 
+              height: 24, 
+              mr: 1,
+              bgcolor: deepPurple[500],
+              fontSize: 14
+            }}
+          >
+            {organization?.charAt(0) || 'O'}
+          </Avatar>
+          <Typography variant="body2" color="text.secondary">
+            {organization || 'Organización'}
+          </Typography>
+        </Box>
+
+        <Typography variant="body2" color="text.secondary" paragraph sx={{
+          display: '-webkit-box',
+          WebkitLineClamp: 3,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden'
+        }}>
+          {description}
+        </Typography>
+
+        <Divider sx={{ my: 2 }} />
+
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5, mb: 1 }}>
+          {startDate && (
+            <Chip
+              icon={<CalendarToday fontSize="small" />}
+              label={new Date(startDate).toLocaleDateString()}
+              size="small"
+              variant="outlined"
+            />
+          )}
+          {volunteersNeeded && (
+            <Chip
+              icon={<People fontSize="small" />}
+              label={`${volunteersNeeded} voluntarios`}
+              size="small"
+              variant="outlined"
+            />
+          )}
+          {location && (
+            <Chip
+              icon={<Place fontSize="small" />}
+              label={location}
+              size="small"
+              variant="outlined"
+            />
+          )}
+        </Box>
+      </CardContent>
+
+      <CardActions sx={{ p: 2 }}>
+        <Button
+          fullWidth
+          variant="contained"
+          color="primary"
+          endIcon={<ArrowForward />}
+          onClick={handleCardClick}
+          sx={{
+            borderRadius: 2,
+            py: 1,
+            fontWeight: 600
+          }}
+        >
+          Ver Detalles
+        </Button>
+      </CardActions>
+    </StyledCard>
   );
 };
 
