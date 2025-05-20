@@ -213,7 +213,6 @@ const PostulationsTable = ({ searchTerm }) => {
         <TableHead>
           <TableRow sx={{ backgroundColor: 'background.default' }}>
             <TableCell align="center" sx={{ fontWeight: 600 }}>Proyecto</TableCell>
-            <TableCell align="center" sx={{ fontWeight: 600 }}>Organización</TableCell>
             <TableCell align="center" sx={{ fontWeight: 600 }}>Fecha</TableCell>
             <TableCell align="center" sx={{ fontWeight: 600 }}>Estado</TableCell>
             <TableCell align="center" sx={{ fontWeight: 600 }}>Acciones</TableCell>
@@ -227,11 +226,10 @@ const PostulationsTable = ({ searchTerm }) => {
                   {p.projectId ? p.projectId.name : 'Proyecto no disponible'}
                 </Typography>
               </TableCell>
+              
+              
               <TableCell align="center">
-                {p.projectId?.organization || 'N/A'}
-              </TableCell>
-              <TableCell align="center">
-                {new Date(p.createdAt).toLocaleDateString()}
+                {new Date(p.applicationDate).toLocaleDateString()}
               </TableCell>
               <TableCell align="center">
                 <StatusChip status={p.status} />

@@ -17,7 +17,8 @@ import {
   CalendarToday, 
   People, 
   ArrowForward,
-  Place
+  Place,
+  DateRange
 } from '@mui/icons-material';
 import { deepPurple, green, orange, grey } from '@mui/material/colors';
 
@@ -65,6 +66,7 @@ const ProjectCard = ({
   projectId, 
   organization,
   startDate,
+  endDate,
   volunteersNeeded,
   location
 }) => {
@@ -74,14 +76,23 @@ const ProjectCard = ({
     navigate(`/postulacion/${projectId}`);
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "Fecha no disponible";
+    return new Date(dateString).toLocaleDateString();
+  };
+
   return (
     <StyledCard elevation={4}>
       <Box sx={{ position: 'relative' }}>
         <CardMedia
           component="img"
-          height="180"
           image={imageSrc || '/default-project.jpg'}
           alt={title}
+          sx={{ 
+            height: 180, 
+            objectFit: 'cover',
+            width: '100%'
+          }}
         />
         <StatusChip 
           status={status} 
@@ -89,8 +100,19 @@ const ProjectCard = ({
         />
       </Box>
 
-      <CardContent sx={{ flexGrow: 1 }}>
-        <Typography variant="h6" component="h3" gutterBottom sx={{ fontWeight: 700 }}>
+      <CardContent sx={{ 
+        flexGrow: 1, 
+        display: 'flex', 
+        flexDirection: 'column',
+        height: 260, // Altura fija para asegurar uniformidad
+        overflow: 'hidden'
+      }}>
+        <Typography variant="h6" component="h3" gutterBottom sx={{ 
+          fontWeight: 700,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap'
+        }}>
           {title}
         </Typography>
         
@@ -106,7 +128,11 @@ const ProjectCard = ({
           >
             {organization?.charAt(0) || 'O'}
           </Avatar>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary" sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }}>
             {organization || 'Organización'}
           </Typography>
         </Box>
@@ -115,38 +141,65 @@ const ProjectCard = ({
           display: '-webkit-box',
           WebkitLineClamp: 3,
           WebkitBoxOrient: 'vertical',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          height: '4.5em', // Altura fija para 3 líneas
+          mb: 1
         }}>
           {description}
         </Typography>
 
-        <Divider sx={{ my: 2 }} />
+        <Divider sx={{ my: 1 }} />
 
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5, mb: 1 }}>
-          {startDate && (
-            <Chip
-              icon={<CalendarToday fontSize="small" />}
-              label={new Date(startDate).toLocaleDateString()}
-              size="small"
-              variant="outlined"
-            />
-          )}
-          {volunteersNeeded && (
-            <Chip
-              icon={<People fontSize="small" />}
-              label={`${volunteersNeeded} voluntarios`}
-              size="small"
-              variant="outlined"
-            />
-          )}
-          {location && (
-            <Chip
-              icon={<Place fontSize="small" />}
-              label={location}
-              size="small"
-              variant="outlined"
-            />
-          )}
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: 1, 
+          mt: 'auto'
+        }}>
+          <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+            {startDate && (
+              <Chip
+                icon={<CalendarToday fontSize="small" />}
+                label={`Inicio: ${formatDate(startDate)}`}
+                size="small"
+                variant="outlined"
+              />
+            )}
+            {endDate && (
+              <Chip
+                icon={<DateRange fontSize="small" />}
+                label={`Fin: ${formatDate(endDate)}`}
+                size="small"
+                variant="outlined"
+              />
+            )}
+          </Box>
+          <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+            {volunteersNeeded && (
+              <Chip
+                icon={<People fontSize="small" />}
+                label={`${volunteersNeeded} voluntarios`}
+                size="small"
+                variant="outlined"
+              />
+            )}
+            {location && (
+              <Chip
+                icon={<Place fontSize="small" />}
+                label={location}
+                size="small"
+                variant="outlined"
+                sx={{
+                  maxWidth: '100%',
+                  '& .MuiChip-label': {
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  }
+                }}
+              />
+            )}
+          </Box>
         </Box>
       </CardContent>
 

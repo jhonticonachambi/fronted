@@ -54,7 +54,7 @@ const Projects = () => {
     const fetchProjects = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_URL}/projects`);
+        const response = await axios.get(`${API_URL}/projects/active`);
         setProjects(response.data);
         setLoading(false);
       } catch (err) {
@@ -193,9 +193,10 @@ const Projects = () => {
                       description={project.description}
                       status={project.status || 'activo'}
                       imageSrc={project.bannerImage}
-                      organization={project.organization}
-                      startDate={project.startDate}
+                      organization={project.organization}                      startDate={project.startDate}
+                      endDate={project.endDate}
                       volunteersNeeded={project.volunteersNeeded}
+                      location={project.location}
                     />
                   </Grid>
                 ))}

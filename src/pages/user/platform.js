@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { 
   Container, 
   Typography, 
@@ -10,7 +11,8 @@ import {
   Avatar, 
   LinearProgress,
   Chip,
-  Divider
+  Divider,
+  CircularProgress
 } from '@mui/material';
 import { 
   VolunteerActivism, 
@@ -22,6 +24,7 @@ import {
 import SearchBar from '../../components/SearchBar';
 import PostulationsTable from '../../components/PostulationsTable';
 import { styled } from '@mui/material/styles';
+import API_URL from '../../config/apiConfig';
 
 const StyledContainer = styled(Container)(({ theme }) => ({
   marginTop: theme.spacing(6),
@@ -49,30 +52,76 @@ const FeatureCard = styled(Card)(({ theme }) => ({
 
 const Platform = () => {
   const [username, setUsername] = useState('');
+  const [userId, setUserId] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [stats, setStats] = useState({
     totalApplications: 0,
     accepted: 0,
-    pending: 0
+    pending: 0,
+    rejected: 0
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const storedUsername = localStorage.getItem('username');
+    const storedUserId = localStorage.getItem('userId');
 
     if (!token) {
       navigate('/login');
     } else {
       setUsername(storedUsername);
-      // Simular carga de estadísticas (en una app real, esto vendría de una API)
-      setStats({
-        totalApplications: 12,
-        accepted: 5,
-        pending: 3
-      });
+      setUserId(storedUserId);
+
+      // Obtener los datos de postulaciones del usuario desde la API
+      fetchUserPostulations(storedUserId);
     }
   }, [navigate]);
+
+  const fetchUserPostulations = async (userId) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API_URL}/postulations/user/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      // Calcular estadísticas basadas en los datos recibidos
+      const postulations = response.data;
+      
+      // Contar las postulaciones según su estado
+      const totalApplications = postulations.length;
+      const accepted = postulations.filter(p => p.status === 'accepted').length;
+      const pending = postulations.filter(p => p.status === 'pending').length;
+      const rejected = postulations.filter(p => p.status === 'rejected').length;
+
+      setStats({
+        totalApplications,
+        accepted,
+        pending,
+        rejected
+      });
+    } catch (err) {
+      console.error('Error al obtener las postulaciones:', err);
+      setError('No se pudieron cargar las estadísticas de postulaciones');
+      
+      // En caso de error, establecer valores por defecto
+      setStats({
+        totalApplications: 0,
+        accepted: 0,
+        pending: 0,
+        rejected: 0
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <StyledContainer maxWidth="lg">
@@ -98,42 +147,80 @@ const Platform = () => {
           Explora proyectos, gestiona tus postulaciones y únete a comunidades que comparten tus valores.
         </Typography>
       </Box>
-      
-      {/* Tarjetas de estadísticas */}
+        {/* Tarjetas de estadísticas */}
       <Grid container spacing={3} mb={6}>
-        <Grid item xs={12} md={4}>
-          <FeatureCard>
-            <VolunteerActivism color="primary" sx={{ fontSize: 50, mb: 2 }} />
-            <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
-              {stats.totalApplications}
+        {loading ? (
+          <Grid item xs={12} textAlign="center" py={4}>
+            <CircularProgress />
+            <Typography variant="body2" sx={{ mt: 2 }}>
+              Cargando estadísticas...
             </Typography>
-            <Typography variant="body2" color="text.secondary" textAlign="center">
-              Postulaciones realizadas
-            </Typography>
-          </FeatureCard>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <FeatureCard>
-            <AssignmentTurnedIn color="success" sx={{ fontSize: 50, mb: 2 }} />
-            <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
-              {stats.accepted}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" textAlign="center">
-              Proyectos aceptados
-            </Typography>
-          </FeatureCard>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <FeatureCard>
-            <Group color="warning" sx={{ fontSize: 50, mb: 2 }} />
-            <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
-              {stats.pending}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" textAlign="center">
-              Postulaciones pendientes
-            </Typography>
-          </FeatureCard>
-        </Grid>
+          </Grid>
+        ) : error ? (
+          <Grid item xs={12}>
+            <Box sx={{ 
+              p: 3, 
+              bgcolor: '#fff1f0', 
+              borderRadius: 2, 
+              color: '#cf1322',
+              border: '1px solid #ffa39e'
+            }}>
+              <Typography variant="body1">{error}</Typography>
+            </Box>
+          </Grid>
+        ) : (
+          <>
+            <Grid item xs={12} md={3}>
+              <FeatureCard>
+                <VolunteerActivism color="primary" sx={{ fontSize: 50, mb: 2 }} />
+                <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
+                  {stats.totalApplications}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" textAlign="center">
+                  Postulaciones realizadas
+                </Typography>
+              </FeatureCard>
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <FeatureCard>
+                <AssignmentTurnedIn color="success" sx={{ fontSize: 50, mb: 2 }} />
+                <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
+                  {stats.accepted}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" textAlign="center">
+                  Proyectos aceptados
+                </Typography>
+              </FeatureCard>
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <FeatureCard>
+                <Group color="warning" sx={{ fontSize: 50, mb: 2 }} />
+                <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
+                  {stats.pending}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" textAlign="center">
+                  Postulaciones pendientes
+                </Typography>
+              </FeatureCard>
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <FeatureCard sx={{ 
+                bgcolor: stats.rejected > 0 ? '#fff2f0' : 'white',
+                borderColor: stats.rejected > 0 ? '#ffccc7' : 'divider',
+                borderWidth: 1,
+                borderStyle: 'solid'
+              }}>
+                <Group color="error" sx={{ fontSize: 50, mb: 2, opacity: stats.rejected > 0 ? 1 : 0.5 }} />
+                <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
+                  {stats.rejected}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" textAlign="center">
+                  Postulaciones rechazadas
+                </Typography>
+              </FeatureCard>
+            </Grid>
+          </>
+        )}
       </Grid>
 
       {/* Barra de búsqueda */}

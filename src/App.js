@@ -15,6 +15,7 @@ import Login from './pages/auth/login';
 import Register from './pages/auth/register';
 import ForgotPassword from './pages/auth/forgot-password';
 import ResetPassword from './pages/auth/reset-password';
+import AuthCallback from './pages/auth/AuthCallback';
 // Importación de páginas Usuarios
 import Platform from './pages/user/platform'; 
 import Projects from './pages/user/projects'; 
@@ -48,11 +49,11 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Páginas sin layout (auth) */}
-        <Route path="/login" element={<Login />} />
+        {/* Páginas sin layout (auth) */}        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
+        <Route path="/auth-callback" element={<AuthCallback />} />
 
         {/* Layout de Usuario */}
         <Route path="/plataforma" element={<UserLayout><Platform /></UserLayout>} />

@@ -36,7 +36,7 @@ import {
   Bookmark,
   VerifiedUser,
   Description,
-  Schedule,
+  // Removemos Schedule ya que no se usa
   Star
 } from '@mui/icons-material';
 import API_URL from '../../config/apiConfig';
@@ -79,26 +79,64 @@ const StatusChip = styled(Chip)(({ status }) => ({
   alignSelf: 'flex-start'
 }));
 
-const Postulation = () => {
-  const { projectId } = useParams();
+const Postulation = () => {  const { projectId } = useParams();  
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState('');
+  // No usamos userProfile directamente, así que lo eliminamos
+  const [profileComplete, setProfileComplete] = useState(false);
+  // No necesitamos showProfileAlert porque mostramos la alerta basada en profileComplete
+  const [incompleteFields, setIncompleteFields] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
-  const navigate = useNavigate();
-
-  useEffect(() => {
+  const navigate = useNavigate();  useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
       navigate('/login');
     } else {
       const storedUserId = localStorage.getItem('userId');
       setUserId(storedUserId);
+      
+      // Obtener los datos del perfil y verificar si está completo
+      const fetchUserProfile = async () => {
+        try {
+          // Usamos directamente la API de validación de perfil 
+          // en lugar de intentar obtener primero los datos del perfil
+          const completionResponse = await axios.get(`${API_URL}/auth/profile-completion/${storedUserId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          
+          setProfileComplete(completionResponse.data.isComplete);
+          
+          if (!completionResponse.data.isComplete) {
+            // Si el perfil no está completo, mostrar los campos faltantes
+            setIncompleteFields(completionResponse.data.emptyFields || []);
+          }
+        } catch (err) {
+          console.error('Error al verificar la completitud del perfil:', err);
+          // En caso de error, asumimos que el perfil no está completo
+          setProfileComplete(false);
+        }
+      };
+      
+      fetchUserProfile();
     }
   }, [navigate]);
+  
+  // Ya no necesitamos esta función, ya que la validación se hace en el backend
+  // const validateProfileCompletion = (profile) => {
+  //   if (!profile) return setProfileComplete(false);
+  //   
+  //   // Comprobar si los campos requeridos están completos
+  //   const requiredFields = ['phone', 'dni', 'address'];
+  //   const isComplete = requiredFields.every(field => 
+  //     profile[field] && profile[field].toString().trim() !== ''
+  //   );
+  //   
+  //   setProfileComplete(isComplete);
+  // };
 
   useEffect(() => {
     const fetchProjectDetails = async () => {
@@ -410,33 +448,71 @@ const Postulation = () => {
                 </Typography>
               </Box>
 
-              <Divider sx={{ my: 2 }} />
-
-              <Typography variant="h6" component="h3" gutterBottom sx={{ fontWeight: 600 }}>
+              <Divider sx={{ my: 2 }} />              <Typography variant="h6" component="h3" gutterBottom sx={{ fontWeight: 600 }}>
                 Proceso de Postulación
               </Typography>
               <Stepper orientation="vertical" sx={{ mb: 3 }}>
-                <Step active>
-                  <StepLabel>Completa tu perfil</StepLabel>
+                <Step active>                  <StepLabel
+                    error={!profileComplete}
+                    StepIconProps={{
+                      style: { 
+                        color: profileComplete ? blue[500] : 'red' 
+                      }
+                    }}
+                  >
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      Completa tu perfil
+                      {!profileComplete && (
+                        <Button 
+                          size="small" 
+                          color="error"
+                          variant="outlined"
+                          onClick={() => navigate('/perfil')}
+                          sx={{ ml: 2, fontSize: '0.7rem', py: 0.5 }}
+                        >
+                          {incompleteFields.length > 0 ? 'Completar datos' : 'Ir a perfil'}
+                        </Button>
+                      )}
+                    </Box>
+                  </StepLabel>
                 </Step>
-                <Step active>
-                  <StepLabel>Envía tu solicitud</StepLabel>
-                </Step>
-                <Step>
-                  <StepLabel>Revisión del equipo</StepLabel>
+                <Step active={profileComplete}>
+                  <StepLabel disabled={!profileComplete}>Envía tu solicitud</StepLabel>
                 </Step>
                 <Step>
                   <StepLabel>Confirmación</StepLabel>
                 </Step>
-              </Stepper>
-
-              <Button
+              </Stepper>              {!profileComplete && (
+                <Alert severity="warning" sx={{ mb: 2 }}>
+                  <Typography variant="body2" gutterBottom>
+                    Debes completar tu perfil antes de postularte. Por favor, verifica los siguientes campos:
+                  </Typography>
+                  {incompleteFields && incompleteFields.length > 0 ? (
+                    <Box component="ul" sx={{ pl: 3, mt: 1 }}>
+                      {incompleteFields.map((field, index) => (
+                        <Typography component="li" variant="body2" key={index}>
+                          {field === 'phone' && 'Teléfono'}
+                          {field === 'dni' && 'DNI/Documento de identidad'}
+                          {field === 'address' && 'Dirección'}
+                          {field === 'birthdate' && 'Fecha de nacimiento'}
+                          {field === 'skills' && 'Habilidades'}
+                          {field === 'education' && 'Educación'}
+                        </Typography>
+                      ))}
+                    </Box>
+                  ) : (
+                    <Typography variant="body2">
+                      Tu perfil está incompleto. Por favor dirígete a la sección de perfil para completarlo.
+                    </Typography>
+                  )}
+                </Alert>
+              )}<Button
                 onClick={handlePostulation}
                 variant="contained"
                 color="primary"
                 fullWidth
                 size="large"
-                disabled={project.isApplied}
+                disabled={project.isApplied || !profileComplete}
                 startIcon={<VerifiedUser />}
                 sx={{ 
                   borderRadius: 2,
@@ -445,7 +521,12 @@ const Postulation = () => {
                   mt: 2
                 }}
               >
-                {project.isApplied ? 'Ya estás postulado' : 'Postularme ahora'}
+                {project.isApplied 
+                  ? 'Ya estás postulado' 
+                  : !profileComplete 
+                    ? 'Completa tu perfil para postular' 
+                    : 'Postularme ahora'
+                }
               </Button>
 
               {project.isApplied && (
