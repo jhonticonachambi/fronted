@@ -32,11 +32,10 @@ const TaskView = () => {
 
         setProject(projectResponse.data);
         setTasks(tasksResponse.data);
-        
-        // Calcular estadísticas
-        const completed = tasksResponse.data.filter(t => t.status === 'Completed').length;
-        const inProgress = tasksResponse.data.filter(t => t.status === 'In Progress').length;
-        const notStarted = tasksResponse.data.filter(t => t.status === 'Not Started').length;
+          // Calcular estadísticas
+        const completed = tasksResponse.data.filter(t => t.status === 'completed').length;
+        const inProgress = tasksResponse.data.filter(t => t.status === 'in_progress').length;
+        const notStarted = tasksResponse.data.filter(t => t.status === 'pending').length;
         
         setStats({ completed, inProgress, notStarted });
       } catch (err) {
@@ -73,12 +72,14 @@ const TaskView = () => {
 
       setTasks(tasks.map(task => 
         task._id === taskId ? { ...task, status: newStatus } : task
-      ));
-
-      // Actualizar estadísticas
-      const completed = tasks.filter(t => t.status === 'Completed').length;
-      const inProgress = tasks.filter(t => t.status === 'In Progress').length;
-      const notStarted = tasks.filter(t => t.status === 'Not Started').length;
+      ));      // Actualizar estadísticas
+      const updatedTasks = tasks.map(task => 
+        task._id === taskId ? { ...task, status: newStatus } : task
+      );
+      
+      const completed = updatedTasks.filter(t => t.status === 'completed').length;
+      const inProgress = updatedTasks.filter(t => t.status === 'in_progress').length;
+      const notStarted = updatedTasks.filter(t => t.status === 'pending').length;
       setStats({ completed, inProgress, notStarted });
     } catch (err) {
       console.error('Error al actualizar el estado:', err);
@@ -109,24 +110,25 @@ const TaskView = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
-      {/* Header */}
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">      {/* Header */}
       <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                <span className="text-blue-600">Hola</span>, {userName}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-6 md:gap-8">
+            <div className="flex-1">
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+                Gestión de Tareas
               </h1>
-              <p className="text-gray-500 mt-1">Aquí puedes gestionar tus tareas asignadas</p>
+              <p className="text-gray-600 text-lg">Administra y actualiza el estado de tus tareas asignadas</p>
             </div>
-            <Link 
-              to="/lista-proyectos" 
-              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-            >
-              <FiArrowLeft className="mr-2" />
-              Volver a proyectos
-            </Link>
+            <div className="flex-shrink-0 mt-2">
+              <Link 
+                to="/lista-proyectos" 
+                className="inline-flex items-center px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium"
+              >
+                <FiArrowLeft className="mr-2" />
+                Volver a proyectos
+              </Link>
+            </div>
           </div>
         </div>
       </header>
@@ -255,21 +257,20 @@ const TaskView = () => {
                         key={task._id}
                         className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow"
                       >
-                        <div className="p-6">
-                          <div className="flex justify-between items-start mb-3">
+                        <div className="p-6">                          <div className="flex justify-between items-start mb-3">
                             <h3 
                               className="text-lg font-semibold text-gray-900 cursor-pointer hover:text-blue-600"
                               onClick={() => handleTaskClick(task._id)}
                             >
-                              {task.name}
+                              {task.title || task.name}
                             </h3>
                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                              task.status === 'Completed' ? 'bg-green-100 text-green-800' :
-                              task.status === 'In Progress' ? 'bg-blue-100 text-blue-800' :
+                              task.status === 'completed' ? 'bg-green-100 text-green-800' :
+                              task.status === 'in_progress' ? 'bg-blue-100 text-blue-800' :
                               'bg-pink-100 text-pink-800'
                             }`}>
-                              {task.status === 'Completed' ? 'Completada' : 
-                               task.status === 'In Progress' ? 'En Progreso' : 'No Iniciada'}
+                              {task.status === 'completed' ? 'Completada' : 
+                               task.status === 'in_progress' ? 'En Progreso' : 'No Iniciada'}
                             </span>
                           </div>
                           
@@ -280,39 +281,31 @@ const TaskView = () => {
                               <FiCalendar className="mr-1.5" />
                               <span>Fecha límite: {formatDate(task.dueDate)}</span>
                             </div>
-                          )}
-
-                          <div className="flex justify-between items-center">
+                          )}                          <div className="flex justify-between items-center">
                             <div className="flex space-x-2">
                               <button
-                                onClick={() => handleStatusChange(task._id, 'Not Started')}
-                                className={`p-1.5 rounded-md ${task.status === 'Not Started' ? 'bg-pink-100 text-pink-800' : 'bg-gray-100 text-gray-500 hover:bg-pink-50'}`}
+                                onClick={() => handleStatusChange(task._id, 'pending')}
+                                className={`p-1.5 rounded-md ${task.status === 'pending' ? 'bg-pink-100 text-pink-800' : 'bg-gray-100 text-gray-500 hover:bg-pink-50'}`}
                                 title="No iniciada"
                               >
                                 <FiClock />
                               </button>
                               <button
-                                onClick={() => handleStatusChange(task._id, 'In Progress')}
-                                className={`p-1.5 rounded-md ${task.status === 'In Progress' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-500 hover:bg-blue-50'}`}
+                                onClick={() => handleStatusChange(task._id, 'in_progress')}
+                                className={`p-1.5 rounded-md ${task.status === 'in_progress' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-500 hover:bg-blue-50'}`}
                                 title="En progreso"
                               >
                                 <FiAlertCircle />
                               </button>
                               <button
-                                onClick={() => handleStatusChange(task._id, 'Completed')}
-                                className={`p-1.5 rounded-md ${task.status === 'Completed' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-500 hover:bg-green-50'}`}
+                                onClick={() => handleStatusChange(task._id, 'completed')}
+                                className={`p-1.5 rounded-md ${task.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-500 hover:bg-green-50'}`}
                                 title="Completada"
                               >
                                 <FiCheckCircle />
                               </button>
                             </div>
                             
-                            <button
-                              onClick={() => handleTaskClick(task._id)}
-                              className="text-sm text-blue-600 hover:text-blue-800 font-medium"
-                            >
-                              Ver detalles →
-                            </button>
                           </div>
                         </div>
                       </div>

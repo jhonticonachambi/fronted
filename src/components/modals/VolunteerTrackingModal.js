@@ -10,14 +10,20 @@ const VolunteerTrackingModal = ({ volunteerId, onClose }) => {
   const [trackingData, setTrackingData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   useEffect(() => {
     const fetchTrackingData = async () => {
       try {
         setLoading(true);
         setError(null);
         
-        const response = await axios.get(`${API_URL}/volunteers/seguimiento/${volunteerId}`);
+        const token = localStorage.getItem('token');
+        
+        const response = await axios.get(`${API_URL}/volunteer/seguimiento/${volunteerId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
         
         if (response.data && response.data.seguimiento) {
           setTrackingData(response.data);

@@ -42,7 +42,7 @@ const Dashboard = () => {
     try {
       const [projectsRes, volunteersRes, tasksRes] = await Promise.all([
         axios.get(`${API_URL}/projects`),
-        axios.get(`${API_URL}/auth/count/volunteers`),
+        axios.get(`${API_URL}/users/count/volunteers`),
         axios.get(`${API_URL}/tasks`) // Obtenemos todas las tareas
       ]);
 

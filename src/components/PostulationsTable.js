@@ -236,16 +236,7 @@ const PostulationsTable = ({ searchTerm }) => {
               </TableCell>
               <TableCell align="center">
                 <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
-                  <Tooltip title="Ver detalles">
-                    <Button 
-                      variant="outlined" 
-                      size="small"
-                      component={Link}
-                      to={`/postulation/${p._id}`}
-                    >
-                      <Visibility fontSize="small" sx={{ mr: 0.5 }} /> Detalles
-                    </Button>
-                  </Tooltip>
+                  
                   {p.status.toLowerCase() === 'accepted' && (
                     <Tooltip title="Ir al proyecto">
                       <Button 

@@ -104,7 +104,7 @@ const Postulation = () => {  const { projectId } = useParams();
         try {
           // Usamos directamente la API de validación de perfil 
           // en lugar de intentar obtener primero los datos del perfil
-          const completionResponse = await axios.get(`${API_URL}/auth/profile-completion/${storedUserId}`, {
+          const completionResponse = await axios.get(`${API_URL}/users/profile-completion/${storedUserId}`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           
