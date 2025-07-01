@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import PostulationsTable from '../postulation/PostulationsTable';
+import AssignVolunteerToProject from '../../../components/AssignVolunteerToProject';
+import VolunteerRecommendationsModal from '../../../components/VolunteerRecommendationsModal';
+import { addProjectToVolunteerHistory } from '../../../utils/volunteerHistoryAPI';
 import API_URL from '../../../config/apiConfig';
 
 const PostulationDetail = () => {
@@ -14,6 +17,7 @@ const PostulationDetail = () => {
   const [selectedPostulations, setSelectedPostulations] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [showMLModal, setShowMLModal] = useState(false);
 
   useEffect(() => {
     const fetchProjectData = async () => {
@@ -60,6 +64,7 @@ const PostulationDetail = () => {
         return;
       }
       
+      // Actualizar estado de postulaciones
       await axios.put(
         `${API_URL}/postulations/status`,
         {
@@ -71,7 +76,25 @@ const PostulationDetail = () => {
         }
       );
       
-      alert('Estado actualizado exitosamente');
+      // Agregar voluntarios aceptados al historial del proyecto
+      const acceptedPostulations = postulations.filter(p => 
+        pendingPostulations.includes(p._id)
+      );
+      
+      for (const postulation of acceptedPostulations) {
+        try {
+          await addProjectToVolunteerHistory(postulation.user._id, id, {
+            role: 'Voluntario',
+            startDate: new Date(),
+            completed: false
+          });
+          console.log(`Voluntario ${postulation.user.name} agregado al historial del proyecto`);
+        } catch (err) {
+          console.error(`Error al agregar voluntario ${postulation.user.name} al historial:`, err);
+        }
+      }
+      
+      alert(`Estado actualizado exitosamente. ${acceptedPostulations.length} voluntarios agregados al proyecto.`);
       
       // Actualizar el estado local de las postulaciones
       setPostulations((prevPostulations) =>
@@ -202,6 +225,15 @@ const PostulationDetail = () => {
                     disabled={selectedPostulations.length === 0}
                   >
                     Aceptar Seleccionados
+                  </button>
+                  <button
+                    onClick={() => setShowMLModal(true)}
+                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition flex items-center space-x-2"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                    <span>Recomendaciones ML</span>
                   </button>
                   <Link 
                     to="/gestion-de-postulacion" 
@@ -383,6 +415,20 @@ const PostulationDetail = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* ML Recommendations Modal */}
+      {showMLModal && project && (
+        <VolunteerRecommendationsModal
+          projectId={id}
+          projectName={project.name}
+          onClose={() => setShowMLModal(false)}
+          onVolunteerAssigned={(volunteer) => {
+            console.log('Voluntario asignado desde ML:', volunteer);
+            // Opcional: recargar postulaciones para reflejar cambios
+            // fetchProjectData();
+          }}
+        />
       )}
     </div>
   );

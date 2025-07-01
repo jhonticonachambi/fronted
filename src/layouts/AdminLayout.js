@@ -20,7 +20,7 @@ const AdminLayout = ({ children }) => {
   }, []);
 
   return (
-    <div className="flex h-screen bg-gray-100"> {/* Eliminado overflow-hidden */}
+    <div className="flex h-screen bg-gray-100 m-0 p-0"> {/* Eliminado overflow-hidden */}
       {/* Botón de menú para móviles */}
       <button
         onClick={toggleSidebar}
@@ -39,7 +39,7 @@ const AdminLayout = ({ children }) => {
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 w-64 bg-gray-800 text-white z-20 transform ${
+        className={`fixed inset-y-0 left-0 w-64 bg-gray-800 text-white z-20 transform m-0 p-0 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } md:translate-x-0 transition-transform duration-200 ease-in-out`}
       >

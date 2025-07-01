@@ -27,12 +27,18 @@ import Notification from './pages/user/notification';
 import Dashboard from './pages/admin/dashboard'; 
 // Proyectos
 import ProjectManagement from './pages/admin/project/ProjectManagement';
+// Eventos
+import EventManagement from './pages/admin/event/EventManagement';
 import ProjectDetails from './pages/admin/project/ProjectDetails';
 import CreateProject from './pages/admin/project/CreateProject';
 import EditProject from './pages/admin/project/EditProject';
 import ProjectView from './pages/admin/project/ProjectView';
 // Recomendaciones
 import VolunteerRecommendations from './pages/admin/recommendations/recommendations';
+import VolunteerRecommendationsML from './pages/admin/recommendations/VolunteerRecommendationsML';
+// Machine Learning
+import VolunteerMetrics from './pages/admin/volunteer-metrics/VolunteerMetrics';
+import MLServiceStatus from './pages/admin/ml-status/MLServiceStatus';
 // Reportes
 import ReportManagement from './pages/admin/report/reportManagement';
 import ProjectReport from './pages/admin/report/ProjectReport';
@@ -71,6 +77,8 @@ function App() {
         <Route path="/proyecto/:id" element={<AdminLayout><ProjectDetails /></AdminLayout>} />
         <Route path="/proyecto/ver/:id" element={<AdminLayout><ProjectView /></AdminLayout>} />
         <Route path="/proyecto/editar/:id" element={<AdminLayout><EditProject /></AdminLayout>} />
+        {/* Eventos */}
+        <Route path="/gestion-de-eventos" element={<AdminLayout><EventManagement /></AdminLayout>} />
         {/* Postulacion */}
         <Route path="/gestion-de-postulacion" element={<AdminLayout><PostulationManagement /></AdminLayout>} />
         <Route path="/postulacion/asignar-voluntarios/:id" element={<AdminLayout><PostulationDetail /></AdminLayout>} />
@@ -82,7 +90,12 @@ function App() {
         <Route path="/Agregar-Tarea" element={<AdminLayout><AddTask /></AdminLayout>} />
         <Route path="/Editar-Tarea/:taskId" element={<AdminLayout><EditTask /></AdminLayout>} />
         {/* Recomendaciones */}
+        <Route path="/admin/recommendations" element={<AdminLayout><VolunteerRecommendations /></AdminLayout>} />
+        <Route path="/admin/recommendations/ml" element={<AdminLayout><VolunteerRecommendationsML /></AdminLayout>} />
         <Route path="/recomendaciones" element={<AdminLayout><VolunteerRecommendations /></AdminLayout>} />
+        {/* Machine Learning */}
+        <Route path="/admin/volunteer-metrics" element={<AdminLayout><VolunteerMetrics /></AdminLayout>} />
+        <Route path="/admin/ml-status" element={<AdminLayout><MLServiceStatus /></AdminLayout>} />
         {/* Página de Inicio */}
         <Route path="/" element={<Home />} />
       </Routes>
